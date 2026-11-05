@@ -1,0 +1,248 @@
+=== UML CLASSES ===
+
+--- Node: n_BaiDang ---
+BaiDang
+
+--- Node: n_BaiHoc ---
+BaiHoc
+
+--- Node: n_BaiLam ---
+BaiLam
+
+--- Node: n_BaiTapGiao ---
+BaiTapGiao
+
+--- Node: n_BaoCaoDoanhThuAdmin ---
+BaoCaoDoanhThuAdmin
+
+--- Node: n_BaoCaoDoanhThuGiaoVien ---
+BaoCaoDoanhThuGiaoVien
+
+--- Node: n_BaoCaoViPham ---
+BaoCaoViPham
+
+--- Node: n_BinhLuan ---
+BinhLuan
+
+--- Node: n_BoDe ---
+BoDe
+
+--- Node: n_CapDo ---
+CapDo
+
+--- Node: n_CauHinhHeThong ---
+CauHinhHeThong
+
+--- Node: n_CauHoi ---
+CauHoi
+
+--- Node: n_ChiTietBaiLam ---
+ChiTietBaiLam
+
+--- Node: n_ChiTietDe ---
+ChiTietDe
+
+--- Node: n_ChinhSachHoaHong ---
+ChinhSachHoaHong
+
+--- Node: n_ChinhSachHuy ---
+ChinhSachHuy
+
+--- Node: n_ChuongHoc ---
+ChuongHoc
+
+--- Node: n_DangKyKhoaHoc ---
+DangKyKhoaHoc
+
+--- Node: n_DanhGia ---
+DanhGia
+
+--- Node: n_DapAn ---
+DapAn
+
+--- Node: n_DatLich ---
+DatLich
+
+--- Node: n_GiaoDichThanhToan ---
+GiaoDichThanhToan
+
+--- Node: n_GiaoDichVi ---
+GiaoDichVi
+
+--- Node: n_GiaoVien_MonHoc ---
+GiaoVien_MonHoc
+
+--- Node: n_GoiPremium ---
+GoiPremium
+
+--- Node: n_HoSoGiaoVien ---
+HoSoGiaoVien
+
+--- Node: n_HoSoHocSinh ---
+HoSoHocSinh
+
+--- Node: n_HoanTien ---
+HoanTien
+
+--- Node: n_HocSinh_ToHop ---
+HocSinh_ToHop
+
+--- Node: n_KhoaHocTriThuc ---
+KhoaHocTriThuc
+
+--- Node: n_KhoanTamGiu ---
+KhoanTamGiu
+
+--- Node: n_KhoiLop ---
+KhoiLop
+
+--- Node: n_LenhRutTien ---
+LenhRutTien
+
+--- Node: n_LichRanhGiaoVien ---
+LichRanhGiaoVien
+
+--- Node: n_MauNhiemVu ---
+MauNhiemVu
+
+--- Node: n_MonHoc ---
+MonHoc
+
+--- Node: n_NguoiDung ---
+NguoiDung
+
+--- Node: n_NhiemVuNgay ---
+NhiemVuNgay
+
+--- Node: n_NopBaiTap ---
+NopBaiTap
+
+--- Node: n_PhanChiaDoanhThu ---
+PhanChiaDoanhThu
+
+--- Node: n_PhienHoc1V1 ---
+PhienHoc1V1
+
+--- Node: n_QuotaAI ---
+QuotaAI
+
+--- Node: n_TaiKhoan ---
+TaiKhoan
+
+--- Node: n_TaiKhoanNhanTien ---
+TaiKhoanNhanTien
+
+--- Node: n_TaiKhoan_VaiTro ---
+TaiKhoan_VaiTro
+
+--- Node: n_TheoDoi ---
+TheoDoi
+
+--- Node: n_ThongBao ---
+ThongBao
+
+--- Node: n_TienDoBaiHoc ---
+TienDoBaiHoc
+
+--- Node: n_TienDoNhiemVu ---
+TienDoNhiemVu
+
+--- Node: n_ToHopHocTap ---
+ToHopHocTap
+
+--- Node: n_ToHop_MonHoc ---
+ToHop_MonHoc
+
+--- Node: n_VaiTro ---
+VaiTro
+
+--- Node: n_ViTien ---
+ViTien
+
+--- Node: n_Vote ---
+Vote
+
+--- Node: n_YeuCauHuyBuoi ---
+YeuCauHuyBuoi
+
+=== UML EDGES ===
+n_TaiKhoan ---> n_TaiKhoan_VaiTro [label=''] (id=edge_a0)
+n_VaiTro ---> n_TaiKhoan_VaiTro [label=''] (id=edge_a1)
+n_TaiKhoan ---> n_NguoiDung [label=''] (id=edge_a2)
+n_NguoiDung ---> n_HoSoHocSinh [label=''] (id=edge_a3)
+n_NguoiDung ---> n_HoSoGiaoVien [label=''] (id=edge_a4)
+n_KhoiLop ---> n_HoSoHocSinh [label=''] (id=edge_a5)
+n_MonHoc ---> n_ToHop_MonHoc [label=''] (id=edge_a6)
+n_ToHopHocTap ---> n_ToHop_MonHoc [label=''] (id=edge_a7)
+n_ToHopHocTap ---> n_HocSinh_ToHop [label=''] (id=edge_a8)
+n_HoSoHocSinh ---> n_HocSinh_ToHop [label=''] (id=edge_a9)
+n_NguoiDung ---> n_ToHopHocTap [label=''] (id=edge_a10)
+n_MonHoc ---> n_GiaoVien_MonHoc [label=''] (id=edge_a11)
+n_HoSoGiaoVien ---> n_GiaoVien_MonHoc [label=''] (id=edge_a12)
+n_MonHoc ---> n_KhoaHocTriThuc [label=''] (id=edge_a13)
+n_KhoaHocTriThuc ---> n_DangKyKhoaHoc [label=''] (id=edge_a14)
+n_HoSoHocSinh ---> n_DangKyKhoaHoc [label=''] (id=edge_a15)
+n_HoSoGiaoVien ---> n_LichRanhGiaoVien [label=''] (id=edge_a16)
+n_MonHoc ---> n_LichRanhGiaoVien [label=''] (id=edge_a17)
+n_HoSoHocSinh ---> n_DatLich [label=''] (id=edge_a18)
+n_NguoiDung ---> n_DatLich [label=''] (id=edge_a19)
+n_LichRanhGiaoVien ---> n_DatLich [label=''] (id=edge_a20)
+n_ChinhSachHuy ---> n_DatLich [label=''] (id=edge_a21)
+n_DatLich ---> n_PhienHoc1V1 [label=''] (id=edge_a22)
+n_DatLich ---> n_YeuCauHuyBuoi [label=''] (id=edge_a23)
+n_YeuCauHuyBuoi ---> n_HoanTien [label=''] (id=edge_a24)
+n_GiaoDichVi ---> n_HoanTien [label=''] (id=edge_a25)
+n_NguoiDung ---> n_YeuCauHuyBuoi [label=''] (id=edge_a26)
+n_DatLich ---> n_DanhGia [label=''] (id=edge_a27)
+n_NguoiDung ---> n_ViTien [label=''] (id=edge_a28)
+n_ViTien ---> n_GiaoDichThanhToan [label=''] (id=edge_a29)
+n_ViTien ---> n_GiaoDichVi [label=''] (id=edge_a30)
+n_DatLich ---> n_KhoanTamGiu [label=''] (id=edge_a31)
+n_KhoanTamGiu ---> n_PhanChiaDoanhThu [label=''] (id=edge_a32)
+n_ChinhSachHoaHong ---> n_PhanChiaDoanhThu [label=''] (id=edge_a33)
+n_HoSoGiaoVien ---> n_LenhRutTien [label=''] (id=edge_a34)
+n_TaiKhoanNhanTien ---> n_LenhRutTien [label=''] (id=edge_a35)
+n_HoSoGiaoVien ---> n_TaiKhoanNhanTien [label=''] (id=edge_a36)
+n_GoiPremium ---> n_HoSoHocSinh [label=''] (id=edge_a37)
+n_HoSoGiaoVien ---> n_BaoCaoDoanhThuGiaoVien [label=''] (id=edge_a38)
+n_KhoaHocTriThuc ---> n_ChuongHoc [label=''] (id=edge_a39)
+n_ChuongHoc ---> n_BaiHoc [label=''] (id=edge_a40)
+n_BaiHoc ---> n_TienDoBaiHoc [label=''] (id=edge_a41)
+n_HoSoHocSinh ---> n_TienDoBaiHoc [label=''] (id=edge_a42)
+n_MonHoc ---> n_BoDe [label=''] (id=edge_a43)
+n_BoDe ---> n_ChiTietDe [label=''] (id=edge_a44)
+n_CauHoi ---> n_ChiTietDe [label=''] (id=edge_a45)
+n_CauHoi ---> n_DapAn [label=''] (id=edge_a46)
+n_BoDe ---> n_BaiLam [label=''] (id=edge_a47)
+n_HoSoHocSinh ---> n_BaiLam [label=''] (id=edge_a48)
+n_BaiLam ---> n_ChiTietBaiLam [label=''] (id=edge_a49)
+n_CauHoi ---> n_ChiTietBaiLam [label=''] (id=edge_a50)
+n_DapAn ---> n_ChiTietBaiLam [label=''] (id=edge_a51)
+n_BoDe ---> n_BaiTapGiao [label=''] (id=edge_a52)
+n_HoSoGiaoVien ---> n_BaiTapGiao [label=''] (id=edge_a53)
+n_MonHoc ---> n_BaiTapGiao [label=''] (id=edge_a54)
+n_BaiTapGiao ---> n_NopBaiTap [label=''] (id=edge_a55)
+n_HoSoHocSinh ---> n_NopBaiTap [label=''] (id=edge_a56)
+n_BaiLam ---> n_NopBaiTap [label=''] (id=edge_a57)
+n_NguoiDung ---> n_BaiDang [label=''] (id=edge_a58)
+n_BaiDang ---> n_BinhLuan [label=''] (id=edge_a59)
+n_NguoiDung ---> n_BinhLuan [label=''] (id=edge_a60)
+n_BaiDang ---> n_Vote [label=''] (id=edge_a61)
+n_NguoiDung ---> n_Vote [label=''] (id=edge_a62)
+n_NguoiDung ---> n_ThongBao [label=''] (id=edge_a63)
+n_NguoiDung ---> n_BaoCaoViPham [label=''] (id=edge_a64)
+n_HoSoHocSinh ---> n_TheoDoi [label=''] (id=edge_a65)
+n_HoSoGiaoVien ---> n_TheoDoi [label=''] (id=edge_a66)
+n_MauNhiemVu ---> n_NhiemVuNgay [label=''] (id=edge_a67)
+n_NhiemVuNgay ---> n_TienDoNhiemVu [label=''] (id=edge_a68)
+n_HoSoHocSinh ---> n_TienDoNhiemVu [label=''] (id=edge_a69)
+n_CapDo ---> n_HoSoHocSinh [label=''] (id=edge_a70)
+n_HoSoHocSinh ---> n_QuotaAI [label=''] (id=edge_a71)
+n_GiaoDichThanhToan ---> n_GiaoDichVi [label='«khi nạp thành công»'] (id=edge_d0)
+n_YeuCauHuyBuoi ---> n_KhoanTamGiu [label='«khi hủy»'] (id=edge_d1)
+n_KhoanTamGiu ---> n_GiaoDichVi [label=''] (id=edge_d2)
+n_PhanChiaDoanhThu ---> n_GiaoDichVi [label='«ghi có GV»'] (id=edge_d3)
+n_LenhRutTien ---> n_GiaoDichVi [label=''] (id=edge_d4)
+n_PhanChiaDoanhThu ---> n_BaoCaoDoanhThuAdmin [label=''] (id=edge_d5)
+n_PhanChiaDoanhThu ---> n_BaoCaoDoanhThuGiaoVien [label=''] (id=edge_d6)
+n_DangKyKhoaHoc ---> n_GiaoDichVi [label=''] (id=edge_d7)

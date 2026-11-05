@@ -1,0 +1,73 @@
+@model List<DONET_Academy.Core.Entities.HoSoGiaoVien>
+@{
+    ViewData["Title"] = "Tìm Gia Sư Luyện Thi 1-1";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Dịch Vụ Gia Sư Luyện Thi 1-1 Trực Tuyến</h2>
+            <p class="text-muted mb-0">Học trực tiếp cùng giáo viên trường chuyên và thủ khoa đại học</p>
+        </div>
+        <div class="card p-2 px-3 border-0 bg-warning text-dark small rounded-pill fw-semibold">
+            Chính sách hoàn tiền: Hủy trước 48 giờ hoàn 100%
+        </div>
+    </div>
+
+    <div class="row g-4">
+        @foreach (var gv in Model)
+        {
+            <div class="col-md-6">
+                <div class="card-donet card-donet-interactive h-100">
+                    <div class="d-flex gap-3 mb-3">
+                        <img src="~/images/avatar_teacher1.png" onerror="this.src='/images/mascot_oriole.png'" class="rounded-circle border" width="70" height="70" style="object-fit:cover;" />
+                        <div>
+                            <div class="d-flex align-items-center gap-2">
+                                <h5 class="fw-bold mb-0">@gv.NguoiDung?.HoTen</h5>
+                                <span class="badge bg-success small">Đã xác minh</span>
+                            </div>
+                            <div class="text-warning small my-1">
+                                ★ @gv.DanhGiaTB <span class="text-muted">(@gv.SoNamKinhNghiem năm kinh nghiệm)</span>
+                            </div>
+                            <div class="text-muted small">@gv.BangCapChungChi</div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-muted small mb-3">@gv.GioiThieu</p>
+
+                    <!-- Subjects & Rate -->
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        @foreach (var m in gv.GiaoVien_MonHocs)
+                        {
+                            <span class="badge bg-light text-dark border">
+                                @m.MonHoc?.TenMonHoc: <strong>@m.GiaTienMoiGio.ToString("N0") đ/buổi</strong>
+                            </span>
+                        }
+                    </div>
+
+                    <!-- Available Slots -->
+                    <h6 class="fw-bold small text-muted mb-2">LỊCH RẢNH TUẦN NÀY:</h6>
+                    <div class="d-flex flex-column gap-2 mb-4">
+                        @foreach (var s in gv.LichRanhGiaoViens.Where(l => l.TrangThai == DONET_Academy.Core.Enums.TrangThaiLichRanh.Trong))
+                        {
+                            <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded border">
+                                <span class="small fw-semibold">@s.ThoiGianBatDau.ToString("dd/MM/yyyy HH:mm") - @s.ThoiGianKetThuc.ToString("HH:mm")</span>
+                                <a href="/Student/Tutors/Book/@s.MaLichRanh" class="btn-donet py-1 px-3 small">Đặt ca này</a>
+                            </div>
+                        }
+                        @if (!gv.LichRanhGiaoViens.Any(l => l.TrangThai == DONET_Academy.Core.Enums.TrangThaiLichRanh.Trong))
+                        {
+                            <div class="small text-muted py-2">Hiện tại giáo viên đã kín lịch tuần này.</div>
+                        }
+                    </div>
+
+                    <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                        <span class="small text-muted">Bảo lãnh ví: Tạm giữ tiền an toàn</span>
+                        <button class="btn-outline-donet py-1 px-3 small">Xem hồ sơ đầy đủ</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

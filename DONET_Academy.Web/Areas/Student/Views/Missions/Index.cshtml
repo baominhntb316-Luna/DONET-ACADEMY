@@ -1,0 +1,87 @@
+@model List<DONET_Academy.Core.Entities.TienDoNhiemVu>
+@{
+    ViewData["Title"] = "Nhiệm Vụ Hàng Ngày & Bảng Xếp Hạng XP";
+    var student = ViewBag.Student as DONET_Academy.Core.Entities.HoSoHocSinh;
+}
+
+<div class="container py-4">
+    <div class="row g-4">
+        <!-- Missions List Column -->
+        <div class="col-lg-7">
+            <h2 class="fw-bold mb-1">Nhiệm Vụ Hàng Ngày</h2>
+            <p class="text-muted mb-4">Tích lũy XP để thăng hạng cấp độ và nhận các phần quà học tập</p>
+
+            <div class="d-flex flex-column gap-3">
+                @foreach (var m in Model)
+                {
+                    <div class="card-donet">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="fw-bold fs-5 text-dark">@m.NhiemVuNgay?.MauNhiemVu?.TenNhiemVu</span>
+                            <span class="badge bg-warning text-dark px-3 py-1 rounded-pill">+@m.NhiemVuNgay?.MauNhiemVu?.PhanThuongXP XP</span>
+                        </div>
+                        <p class="text-muted small mb-3">@m.NhiemVuNgay?.MauNhiemVu?.MoTa</p>
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="progress flex-grow-1 me-3" style="height: 8px;">
+                                <div class="progress-bar @(m.DaHoanThanh ? "bg-success" : "bg-warning")" style="width: @(m.DaHoanThanh ? "100%" : "30%")"></div>
+                            </div>
+                            @if (m.DaHoanThanh)
+                            {
+                                <button class="btn btn-sm btn-outline-success rounded-pill px-3 py-1" disabled>✓ Đã nhận thưởng</button>
+                            }
+                            else
+                            {
+                                <button onclick="showToast('Hoàn thành nhiệm vụ! +50 XP được cộng vào tài khoản.', 'success')" class="btn-donet py-1 px-3 small">Thực hiện</button>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Leaderboard Column -->
+        <div class="col-lg-5">
+            <div class="card-donet">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0">Bảng Xếp Hạng Tuần</h5>
+                    <span class="badge bg-light text-dark border">Cập nhật 15 phút/lần</span>
+                </div>
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item d-flex align-items-center justify-content-between px-0 py-3 border-bottom">
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="badge bg-warning text-dark rounded-circle" style="width: 28px; height: 28px; display:inline-flex; align-items:center; justify-content:center;">1</span>
+                            <div>
+                                <div class="fw-bold">Trần Hoàng Long</div>
+                                <span class="small text-muted">Lớp 12A1 • Chuyên Lê Hồng Phong</span>
+                            </div>
+                        </div>
+                        <strong class="text-warning">2.840 XP</strong>
+                    </div>
+
+                    <div class="list-group-item d-flex align-items-center justify-content-between px-0 py-3 border-bottom">
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="badge bg-secondary text-white rounded-circle" style="width: 28px; height: 28px; display:inline-flex; align-items:center; justify-content:center;">2</span>
+                            <div>
+                                <div class="fw-bold">Lê Thu Trang</div>
+                                <span class="small text-muted">Lớp 12 Chuyên Toán • Phổ Thông Năng Khiếu</span>
+                            </div>
+                        </div>
+                        <strong class="text-warning">2.510 XP</strong>
+                    </div>
+
+                    <div class="list-group-item d-flex align-items-center justify-content-between px-0 py-3 border-bottom bg-light rounded px-2">
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="badge bg-dark text-white rounded-circle" style="width: 28px; height: 28px; display:inline-flex; align-items:center; justify-content:center;">12</span>
+                            <div>
+                                <div class="fw-bold text-dark">Bạn (Nguyễn Văn An)</div>
+                                <span class="small text-muted">Khối 12 THPT</span>
+                            </div>
+                        </div>
+                        <strong class="text-warning">1.450 XP</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,58 @@
+@model DONET_Academy.Core.Entities.BaiHoc
+@{
+    ViewData["Title"] = Model.TieuDe;
+}
+
+<div class="container-fluid px-lg-5 py-4">
+    <a href="/Student/Courses/Details/@Model.ChuongHoc?.KhoaHoc?.MaKhoaHoc" class="text-muted small d-inline-block mb-3">&larr; Quay lại thông tin khóa học</a>
+    
+    <div class="row g-4">
+        <!-- Video Player Column -->
+        <div class="col-lg-9">
+            <div class="card-donet p-0 overflow-hidden mb-3">
+                <div class="bg-dark d-flex align-items-center justify-content-center text-white" style="height: 480px; background: linear-gradient(135deg, #1C1917 0%, #2E2925 100%);">
+                    <div class="text-center">
+                        <div class="spinner-donet mb-3"></div>
+                        <h4 class="fw-bold mb-1">@Model.TieuDe</h4>
+                        <p class="text-muted small mb-3">Thời lượng video: @Model.ThoiLuongPhut phút</p>
+                        <button onclick="showToast('Bắt đầu phát video bài giảng HD...', 'info')" class="btn-donet">Phát Video Bài Học</button>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h3 class="fw-bold mb-0">@Model.TieuDe</h3>
+                        <button onclick="showToast('Đã đánh dấu hoàn thành bài học! +20 XP', 'success')" class="btn-donet py-1 px-3 small">Đánh dấu hoàn thành</button>
+                    </div>
+                    <p class="text-muted">Chương: @Model.ChuongHoc?.TenChuong | Khóa học: @Model.ChuongHoc?.KhoaHoc?.TenKhoaHoc</p>
+                    <div class="border-top pt-3 mt-3">
+                        <h5 class="fw-bold">Tài liệu đính kèm & Tóm tắt kiến thức</h5>
+                        <p class="text-muted small">Tải sơ đồ tư duy Mindmap PDF và bộ câu hỏi trắc nghiệm tự luyện sau video này.</p>
+                        <button class="btn-outline-donet py-1 px-3 small">Tải File PDF Tóm Tắt (3.2 MB)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Playlist Column -->
+        <div class="col-lg-3">
+            <div class="card-donet">
+                <h5 class="fw-bold mb-3">Danh Sách Bài Học</h5>
+                <div class="list-group list-group-flush">
+                    <a href="#" class="list-group-item active bg-warning border-0 text-dark rounded mb-2">
+                        <div class="fw-bold small">Đang học: @Model.TieuDe</div>
+                        <span class="small">18 phút</span>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action border-0 rounded mb-2">
+                        <div class="fw-bold small">Bài tiếp: Bài tập vận dụng cao</div>
+                        <span class="small text-muted">25 phút</span>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action border-0 rounded">
+                        <div class="fw-bold small">Trắc nghiệm nhanh 10 câu</div>
+                        <span class="small text-muted">15 phút</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,131 @@
+@model List<DONET_Academy.Core.Entities.LichRanhGiaoVien>
+@{
+    ViewData["Title"] = "Quản Lý Lịch Rảnh Giảng Dạy";
+    var subjects = ViewBag.Subjects as List<DONET_Academy.Core.Entities.MonHoc> ?? new();
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Quản Lý Lịch Rảnh Dạy 1-1</h2>
+            <p class="text-muted mb-0">Học sinh sẽ nhìn thấy các ca rảnh này để đặt lịch học trực tuyến</p>
+        </div>
+        <button onclick="openModal('addSlotModal')" class="btn-donet">+ Mở Thêm Ca Dạy Mới</button>
+    </div>
+
+    <!-- Slots Table -->
+    <div class="card-donet">
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr class="text-muted small">
+                        <th>MÃ CA</th>
+                        <th>MÔN HỌC</th>
+                        <th>THỜI GIAN BẮT ĐẦU</th>
+                        <th>THỜI GIAN KẾT THÚC</th>
+                        <th>HỌC PHÍ / BUỔI</th>
+                        <th>TRẠNG THÁI</th>
+                        <th>HỌC SINH ĐẶT</th>
+                        <th>THAO TÁC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var s in Model)
+                    {
+                        var booking = s.DatLichs.FirstOrDefault();
+                        <tr>
+                            <td>#LR-@s.MaLichRanh</td>
+                            <td><strong>@s.MonHoc?.TenMonHoc</strong></td>
+                            <td>@s.ThoiGianBatDau.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>@s.ThoiGianKetThuc.ToString("HH:mm")</td>
+                            <td class="fw-bold">@s.GiaTien.ToString("N0") đ</td>
+                            <td>
+                                @if (s.TrangThai == DONET_Academy.Core.Enums.TrangThaiLichRanh.DaDat)
+                                {
+                                    <span class="badge bg-warning text-dark">Đã được đặt</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">Đang mở (Trống)</span>
+                                }
+                            </td>
+                            <td>
+                                @if (booking != null)
+                                {
+                                    <strong>@booking.HoSoHocSinh?.NguoiDung?.HoTen</strong>
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">Chưa có</span>
+                                }
+                            </td>
+                            <td>
+                                @if (s.TrangThai == DONET_Academy.Core.Enums.TrangThaiLichRanh.Trong)
+                                {
+                                    <button onclick="showToast('Đã đóng ca dạy này!', 'info')" class="btn-outline-donet py-1 px-2 small">Đóng ca</button>
+                                }
+                                else
+                                {
+                                    <a href="/Teacher/Classrooms" class="btn-donet py-1 px-2 small">Vào phòng</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Mở ca rảnh mới chuẩn Bootstrap 5 & Apple Design -->
+<div class="modal fade modal-apple-blur" id="addSlotModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 24px; padding: 28px;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); border: 1.5px solid #FCD34D;">
+                        <span class="fs-5">📅</span>
+                    </div>
+                    <div>
+                        <h4 class="fw-bold mb-0">Mở Ca Dạy 1-1 Mới</h4>
+                        <p class="text-muted small mb-0">Hệ thống áp dụng khóa lạc quan (RowVersion) chống trùng lịch tuyệt đối.</p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close-apple" data-bs-dismiss="modal" onclick="closeModal('addSlotModal')">✕</button>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label small fw-bold">Môn học phụ trách:</label>
+                <select class="form-select input-apple">
+                    @foreach (var sub in subjects)
+                    {
+                        <option value="@sub.MaMonHoc">@sub.TenMonHoc</option>
+                    }
+                </select>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label small fw-bold">Thời gian bắt đầu:</label>
+                    <input type="datetime-local" class="form-control input-apple" value="@DateTime.Now.AddDays(1).ToString("yyyy-MM-ddTHH:mm")" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label small fw-bold">Thời gian kết thúc:</label>
+                    <input type="datetime-local" class="form-control input-apple" value="@DateTime.Now.AddDays(1).AddHours(1).AddMinutes(30).ToString("yyyy-MM-ddTHH:mm")" />
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label small fw-bold">Học phí mỗi buổi (VNĐ):</label>
+                <input type="number" class="form-control input-apple" value="180000" />
+                <div class="form-text small text-muted">Sàn trích 15% hoa hồng nền tảng khi quyết toán xong buổi học.</div>
+            </div>
+
+            <div class="d-flex gap-2 pt-2 border-top">
+                <button type="button" data-bs-dismiss="modal" onclick="closeModal('addSlotModal')" class="btn-outline-donet flex-grow-1">Hủy</button>
+                <button type="button" onclick="closeModal('addSlotModal'); showToast('Mở ca rảnh thành công! Học sinh đã có thể đặt lịch.', 'success')" class="btn btn-donet-gold flex-grow-1 py-2 fw-bold shadow-sm">Lưu & Mở Ca</button>
+            </div>
+        </div>
+    </div>
+</div>
+

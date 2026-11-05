@@ -1,0 +1,125 @@
+@model DONET_Academy.Core.Entities.ViTien
+@{
+    ViewData["Title"] = "Ví Giảng Viên & Doanh Thu";
+    var teacher = ViewBag.Teacher as DONET_Academy.Core.Entities.HoSoGiaoVien;
+    var payouts = ViewBag.Payouts as List<DONET_Academy.Core.Entities.LenhRutTien> ?? new();
+    var splits = ViewBag.Splits as List<DONET_Academy.Core.Entities.PhanChiaDoanhThu> ?? new();
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Ví Giảng Viên & Quyết Toán Doanh Thu</h2>
+            <p class="text-muted mb-0">Theo dõi dòng tiền dạy học 1-1, tỷ lệ hoa hồng sàn và rút tiền về tài khoản ngân hàng</p>
+        </div>
+        <button onclick="openModal('payoutModal')" class="btn-donet">Tạo Lệnh Rút Tiền</button>
+    </div>
+
+    <!-- Balance & Commission Card -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="card-donet" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(250, 126, 10, 0.05) 100%);">
+                <span class="text-muted small fw-semibold">SỐ DƯ KHẢ DỤNG ĐỂ RÚT</span>
+                <div class="h1 fw-bold text-success mt-2 mb-1">@((Model?.SoDuKhaDung ?? 18500000).ToString("N0")) <span class="fs-4 text-dark">VNĐ</span></div>
+                <div class="small text-muted">Đã tự động quyết toán sau các buổi học hoàn thành nghiệm thu.</div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card-donet">
+                <span class="text-muted small fw-semibold">CHÍNH SÁCH HOA HỒNG NỀN TẢNG</span>
+                <div class="h2 fw-bold text-dark mt-2 mb-1">15% <span class="fs-5 text-muted fw-normal">(Phí duy trì sàn DONET)</span></div>
+                <div class="small text-muted">Giáo viên thực nhận <strong>85%</strong> trên mỗi buổi học 1-1 thành công.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bank Accounts Section -->
+    <div class="card-donet mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold mb-0">Tài Khoản Ngân Hàng Nhận Tiền (TaiKhoanNhanTien)</h5>
+            <button onclick="showToast('Mở cửa sổ thêm tài khoản ngân hàng mới...', 'info')" class="btn-outline-donet py-1 px-3 small">+ Thêm TK</button>
+        </div>
+        <div class="row g-3">
+            @foreach (var tk in teacher?.TaiKhoanNhanTiens ?? new List<DONET_Academy.Core.Entities.TaiKhoanNhanTien>())
+            {
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded-3 border d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="fw-bold text-dark">@tk.TenNganHang — @tk.SoTaiKhoan</div>
+                            <span class="text-muted small">Chủ TK: @tk.TenChuTaiKhoan (CN: @tk.ChiNhanh)</span>
+                        </div>
+                        <span class="badge bg-success">Mặc định</span>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Payout Requests History -->
+    <div class="card-donet">
+        <h5 class="fw-bold mb-3">Lịch Sử Lệnh Rút Tiền (LenhRutTien)</h5>
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr class="text-muted small">
+                        <th>MÃ LỆNH</th>
+                        <th>SỐ TIỀN RÚT</th>
+                        <th>TÀI KHOẢN NHẬN</th>
+                        <th>NGÀY YÊU CẦU</th>
+                        <th>TRẠNG THÁI</th>
+                        <th>GHI CHÚ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in payouts)
+                    {
+                        <tr>
+                            <td>#RT-@p.MaLenhRut</td>
+                            <td class="fw-bold text-danger">-@p.SoTien.ToString("N0") đ</td>
+                            <td>@p.TaiKhoanNhanTien?.TenNganHang (@p.TaiKhoanNhanTien?.SoTaiKhoan)</td>
+                            <td class="small text-muted">@p.NgayYeuCau.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td><span class="badge bg-warning text-dark">Chờ Admin duyệt</span></td>
+                            <td class="small text-muted">@p.GhiChu</td>
+                        </tr>
+                    }
+                    @if (!payouts.Any())
+                    {
+                        <tr><td colspan="6" class="text-center text-muted py-3">Chưa có lệnh rút tiền nào.</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Rút tiền -->
+<div class="modal fade modal-apple-blur" id="payoutModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 24px; padding: 28px;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold mb-0">Yêu Cầu Rút Tiền Thu Nhập</h4>
+                <button type="button" class="btn-close-apple" data-bs-dismiss="modal" onclick="closeModal('payoutModal')">✕</button>
+            </div>
+            <p class="text-muted small mb-3">Lệnh rút tiền sẽ được Admin kiểm duyệt và chuyển khoản trong vòng 24 giờ làm việc.</p>
+
+            <div class="mb-3">
+                <label class="form-label small fw-bold">Số tiền muốn rút (VNĐ):</label>
+                <input type="number" class="form-control" value="5000000" min="100000" />
+                <div class="form-text small text-muted">Số dư khả dụng hiện tại: 18.500.000 đ</div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label small fw-bold">Chọn tài khoản ngân hàng:</label>
+                <select class="form-select">
+                    <option>Vietcombank - 0071000998877 (NGUYEN VAN BINH)</option>
+                </select>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="button" class="btn-outline-donet flex-grow-1" data-bs-dismiss="modal" onclick="closeModal('payoutModal')">Hủy</button>
+                <button type="button" onclick="closeModal('payoutModal'); showToast('Tạo lệnh rút tiền thành công! Admin sẽ duyệt sớm nhất.', 'success')" class="btn-donet flex-grow-1">Gửi Yêu Cầu</button>
+            </div>
+        </div>
+    </div>
+</div>
+

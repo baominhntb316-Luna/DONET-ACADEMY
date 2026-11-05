@@ -1,0 +1,39 @@
+@model List<DONET_Academy.Core.Entities.BoDe>
+@{
+    ViewData["Title"] = "Phòng Luyện Thi Trắc Nghiệm";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Phòng Khảo Thí & Luyện Đề Chuẩn Bộ GD&ĐT</h2>
+            <p class="text-muted mb-0">Hệ thống tính giờ tự động, chấm điểm tức thì và phân tích đáp án chi tiết</p>
+        </div>
+        <button class="btn-outline-donet">Lịch sử bài thi</button>
+    </div>
+
+    <div class="row g-4">
+        @foreach (var ex in Model)
+        {
+            <div class="col-md-6">
+                <div class="card-donet card-donet-interactive h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="badge bg-warning text-dark">@ex.MonHoc?.TenMonHoc</span>
+                        <span class="badge bg-light text-dark border">Thời gian: @ex.ThoiGianLamBaiPhut phút</span>
+                    </div>
+                    <h5 class="fw-bold mb-2">@ex.TieuDe</h5>
+                    <div class="d-flex gap-3 text-muted small mb-4">
+                        <div>Số câu hỏi: <strong>@ex.SoCauHoi câu</strong></div>
+                        <div>Thang điểm: <strong>@ex.DiemToiDa</strong></div>
+                        <div>Lượt thi: <strong>1.240 lượt</strong></div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top">
+                        <span class="text-success small fw-semibold">Miễn phí cho học sinh</span>
+                        <a href="/Student/Exams/Take/@ex.MaBoDe" class="btn-donet py-1 px-4">Bắt đầu thi</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

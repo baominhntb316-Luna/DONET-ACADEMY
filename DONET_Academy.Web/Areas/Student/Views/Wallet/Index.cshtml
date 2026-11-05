@@ -1,0 +1,165 @@
+@model DONET_Academy.Core.Entities.ViTien
+@{
+    ViewData["Title"] = "Ví Tiền & Lịch Sử Giao Dịch";
+    var escrow = ViewBag.Escrow as List<DONET_Academy.Core.Entities.KhoanTamGiu> ?? new();
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Ví Tiền Học Sinh DONET</h2>
+            <p class="text-muted mb-0">Quản lý số dư, nạp tiền học phí và theo dõi các khoản tạm giữ phiên học 1-1</p>
+        </div>
+        <button onclick="openModal('topupModal')" class="btn-donet">+ Nạp Tiền Vào Ví</button>
+    </div>
+
+    <!-- Balance Overview Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="card-donet" style="background: linear-gradient(135deg, rgba(252, 183, 18, 0.12) 0%, rgba(250, 126, 10, 0.05) 100%);">
+                <span class="text-muted small fw-semibold">SỐ DƯ KHẢ DỤNG</span>
+                <div class="h1 fw-bold text-dark mt-2 mb-1">@((Model?.SoDuKhaDung ?? 850000).ToString("N0")) <span class="fs-4">VNĐ</span></div>
+                <div class="small text-muted">Có thể dùng để đăng ký khóa học hoặc đặt gia sư 1-1 ngay.</div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card-donet">
+                <span class="text-muted small fw-semibold">SỐ DƯ TẠM GIỮ (ESCROW)</span>
+                <div class="h1 fw-bold text-warning mt-2 mb-1">@((Model?.SoDuDongBang ?? 150000).ToString("N0")) <span class="fs-4 text-dark">VNĐ</span></div>
+                <div class="small text-muted">Đang bảo đảm an toàn cho các buổi học 1-1 đã đặt (chưa nghiệm thu).</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Escrow Funds Table -->
+    <div class="card-donet mb-4">
+        <h5 class="fw-bold mb-3">Khoản Tạm Giữ Buổi Học Đang Chờ Nghiệm Thu</h5>
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr class="text-muted small">
+                        <th>MÃ GIỮ</th>
+                        <th>BUỔI HỌC</th>
+                        <th>SỐ TIỀN TẠM GIỮ</th>
+                        <th>NGÀY ĐẶT</th>
+                        <th>TRẠNG THÁI</th>
+                        <th>HÀNH ĐỘNG</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var k in escrow)
+                    {
+                        <tr>
+                            <td>#TG-@k.MaKhoanTamGiu</td>
+                            <td><strong>@k.DatLich?.LichRanhGiaoVien?.MonHoc?.TenMonHoc</strong> (Gia sư 1-1)</td>
+                            <td class="fw-bold text-dark">@k.SoTien.ToString("N0") đ</td>
+                            <td class="small text-muted">@k.NgayGiu.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td><span class="badge bg-warning text-dark">Đang tạm giữ</span></td>
+                            <td>
+                                <button onclick="showToast('Yêu cầu hủy buổi học đã được gửi tới hệ thống xử lý hoàn tiền.', 'warning')" class="btn-outline-donet py-1 px-2 small">Yêu cầu hủy</button>
+                            </td>
+                        </tr>
+                    }
+                    @if (!escrow.Any())
+                    {
+                        <tr><td colspan="6" class="text-center text-muted py-3">Không có khoản tạm giữ nào đang hoạt động.</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Transaction History -->
+    <div class="card-donet">
+        <h5 class="fw-bold mb-3">Lịch Sử Biến Động Số Dư (GiaoDichVi)</h5>
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr class="text-muted small">
+                        <th>MÃ GD</th>
+                        <th>LOẠI GIAO DỊCH</th>
+                        <th>SỐ TIỀN</th>
+                        <th>SỐ DƯ SAU GD</th>
+                        <th>NGÀY GIAO DỊCH</th>
+                        <th>TRẠNG THÁI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#GD-101</td>
+                        <td>Nạp tiền qua VietQR</td>
+                        <td class="text-success fw-bold">+1.000.000 đ</td>
+                        <td>1.000.000 đ</td>
+                        <td class="small text-muted">01/11/2026 09:30</td>
+                        <td><span class="badge bg-success">Thành công</span></td>
+                    </tr>
+                    <tr>
+                        <td>#GD-102</td>
+                        <td>Tạm giữ đặt lịch gia sư Toán</td>
+                        <td class="text-danger fw-bold">-150.000 đ</td>
+                        <td>850.000 đ</td>
+                        <td class="small text-muted">02/11/2026 14:15</td>
+                        <td><span class="badge bg-warning text-dark">Tạm giữ</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Topup Modal Demo -->
+<div class="modal fade modal-apple-blur" id="topupModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 24px; padding: 28px;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold mb-0">Nạp Tiền Vào Ví DONET</h4>
+                <button type="button" class="btn-close-apple" data-bs-dismiss="modal" onclick="closeModal('topupModal')">✕</button>
+            </div>
+            <p class="text-muted small mb-4">Quét mã VietQR chuyển khoản nhanh 24/7, tiền vào ví tự động sau 3 giây.</p>
+            
+            <div class="mb-3">
+                <label class="form-label small fw-bold">Chọn số tiền nạp:</label>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn-outline-donet flex-grow-1" onclick="selectTopup(100000, this)">100.000 đ</button>
+                    <button type="button" class="btn-outline-donet flex-grow-1" onclick="selectTopup(200000, this)">200.000 đ</button>
+                    <button type="button" class="btn-outline-donet flex-grow-1 active bg-warning text-dark" onclick="selectTopup(500000, this)">500.000 đ</button>
+                </div>
+            </div>
+
+            <div class="text-center p-3 bg-light rounded-3 mb-4 border">
+                <div class="small text-muted mb-2">Quét mã VietQR để thanh toán:</div>
+                <div class="bg-white p-3 d-inline-block border rounded">
+                    <div style="width:160px; height:160px; background:#F2EFE9; display:flex; align-items:center; justify-content:center;" class="fw-bold text-muted small">
+                        [Mã VietQR Demo]
+                    </div>
+                </div>
+                <div class="small text-muted mt-2">Nội dung CK: <strong>DONET NAP 101</strong></div>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="button" class="btn-outline-donet flex-grow-1" data-bs-dismiss="modal" onclick="closeModal('topupModal')">Đóng</button>
+                <button type="button" onclick="executeTopup()" class="btn-donet flex-grow-1">Mô Phỏng Đã Nạp</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let selectedTopupAmount = 500000;
+        function selectTopup(amount, btn) {
+            selectedTopupAmount = amount;
+            document.querySelectorAll('#topupModal .btn-outline-donet').forEach(b => {
+                b.classList.remove('active', 'bg-warning', 'text-dark');
+            });
+            if (btn) {
+                btn.classList.add('active', 'bg-warning', 'text-dark');
+            }
+        }
+        function executeTopup() {
+            closeModal('topupModal');
+            showToast('Mô phỏng nạp tiền thành công! +' + selectedTopupAmount.toLocaleString('vi-VN') + ' đ vào ví.', 'success');
+        }
+    </script>
+}
+

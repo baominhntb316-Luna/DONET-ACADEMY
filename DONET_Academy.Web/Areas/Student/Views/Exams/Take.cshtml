@@ -1,0 +1,70 @@
+@model DONET_Academy.Core.Entities.BoDe
+@{
+    ViewData["Title"] = "Làm bài thi: " + Model.TieuDe;
+}
+
+<div class="container py-4">
+    <!-- Exam Header with Countdown -->
+    <div class="card-donet d-flex flex-row justify-content-between align-items-center mb-4 p-3 bg-white sticky-top shadow-sm" style="top: 80px; z-index: 990;">
+        <div>
+            <h5 class="fw-bold mb-0">@Model.TieuDe</h5>
+            <span class="text-muted small">Môn: @Model.MonHoc?.TenMonHoc | Tổng số câu: @Model.ChiTietDes.Count câu</span>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <div class="text-end">
+                <div class="text-muted small">Thời gian còn lại:</div>
+                <div class="h4 fw-bold text-danger mb-0" id="examTimer">44:59</div>
+            </div>
+            <form asp-action="Submit" method="post">
+                <input type="hidden" name="examId" value="@Model.MaBoDe" />
+                <button type="submit" class="btn-donet">Nộp Bài Thi</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Questions List -->
+    <div class="row g-4">
+        <div class="col-lg-8">
+            @{ int qIndex = 1; }
+            @foreach (var c in Model.ChiTietDes)
+            {
+                <div class="card-donet mb-4" id="q_@qIndex">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="badge bg-warning text-dark px-3 py-1 rounded-pill">Câu @qIndex (@c.DiemCau điểm)</span>
+                        <span class="text-muted small">Mức độ: @(c.CauHoi?.MucDo.ToString())</span>
+                    </div>
+                    <h6 class="fw-bold mb-3 fs-5">@c.CauHoi?.NoiDung</h6>
+
+                    <div class="d-flex flex-column gap-2">
+                        @foreach (var ans in c.CauHoi?.DapAns ?? new List<DONET_Academy.Core.Entities.DapAn>())
+                        {
+                            <label class="p-3 border rounded-3 d-flex align-items-center gap-3 cursor-pointer" style="cursor: pointer; transition: background 0.15s ease-out;">
+                                <input type="radio" name="ans_@c.MaCauHoi" value="@ans.MaDapAn" class="form-check-input mt-0" />
+                                <span class="fw-semibold">@ans.NoiDung</span>
+                            </label>
+                        }
+                    </div>
+                </div>
+                qIndex++;
+            }
+        </div>
+
+        <!-- Question Navigation Grid -->
+        <div class="col-lg-4">
+            <div class="card-donet sticky-top" style="top: 170px;">
+                <h6 class="fw-bold mb-3">Bảng Điều Hướng Câu Hỏi</h6>
+                <div class="d-flex flex-wrap gap-2">
+                    @for (int i = 1; i <= Model.ChiTietDes.Count; i++)
+                    {
+                        <a href="#q_@i" class="btn btn-sm btn-outline-secondary rounded-circle" style="width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center;">@i</a>
+                    }
+                </div>
+                <div class="mt-4 pt-3 border-top small text-muted">
+                    <div>⚪ Chưa trả lời</div>
+                    <div class="mt-1">🟡 Đã chọn đáp án</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,92 @@
+/* ========================================================
+   DONET ACADEMY — DESIGN TOKENS (OFFICIAL SYSTEM)
+   Tối giản • Hiện đại • Font Arial • Tông Vàng Hổ Phách
+   ======================================================== */
+
+:root {
+  /* Typography - Chuẩn Arial tối giản */
+  --font-family-base: Arial, "Helvetica Neue", Helvetica, sans-serif;
+  --font-weight-regular: 400;
+  --font-weight-medium: 600;
+  --font-weight-bold: 700;
+  
+  --line-height-base: 1.5;
+  --line-height-heading: 1.25;
+  --letter-spacing-tight: -0.01em;
+
+  /* Bảng màu chủ đạo */
+  --primary-yellow: #FCB712;
+  --primary-yellow-light: #F9BC0C;
+  --primary-orange: #FA7E0A;
+  --primary-orange-hover: #FB8C1F;
+  --gradient-primary: linear-gradient(135deg, #FCB712 0%, #FA7E0A 100%);
+  --gradient-hover: linear-gradient(135deg, #FFC533 0%, #FB8C1F 100%);
+  --gradient-soft: linear-gradient(135deg, rgba(252, 183, 18, 0.12) 0%, rgba(250, 126, 10, 0.08) 100%);
+
+  /* Bề mặt & Nền */
+  --bg-page: #FAF8F5; /* Trắng Be ấm cúng dịu mắt */
+  --card-bg: #FFFFFF;
+  --card-border: #E6DDCF;
+  --card-border-hover: #FCB712;
+  --card-shadow: 0 4px 20px rgba(250, 126, 10, 0.06);
+  --card-shadow-hover: 0 8px 30px rgba(250, 126, 10, 0.12);
+
+  /* Màu chữ - Đen than trung tính */
+  --text-main: #1C1917;
+  --text-muted: #66615B;
+  --text-light: #8E8880;
+
+  /* Màu trạng thái nghiệp vụ */
+  --status-success: #10B981;
+  --status-success-bg: #ECFDF5;
+  --status-warning: #F59E0B;
+  --status-warning-bg: #FFFBEB;
+  --status-danger: #EF4444;
+  --status-danger-bg: #FEF2F2;
+  --status-info: #3B82F6;
+  --status-info-bg: #EFF6FF;
+
+  /* Bo góc */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  font-family: var(--font-family-base) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: var(--bg-page);
+  color: var(--text-main);
+  font-family: var(--font-family-base);
+  font-size: 15px;
+  line-height: var(--line-height-base);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-main);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-heading);
+  letter-spacing: var(--letter-spacing-tight);
+  margin-bottom: 0.5rem;
+}
+
+a {
+  color: var(--text-main);
+  text-decoration: none;
+  transition: color 0.2s ease-out;
+}
+
+a:hover {
+  color: var(--primary-orange);
+}
+

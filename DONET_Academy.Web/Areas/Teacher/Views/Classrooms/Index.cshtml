@@ -1,0 +1,44 @@
+@model List<DONET_Academy.Core.Entities.PhienHoc1V1>
+@{
+    ViewData["Title"] = "Phòng Học Trực Tuyến 1-1";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Phòng Học Trực Tuyến 1-1</h2>
+            <p class="text-muted mb-0">Quản lý các buổi dạy đang diễn ra và kích hoạt quyết toán doanh thu</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        @foreach (var p in Model)
+        {
+            <div class="col-md-6">
+                <div class="card-donet h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="badge bg-warning text-dark">@p.DatLich?.LichRanhGiaoVien?.MonHoc?.TenMonHoc</span>
+                        <span class="badge bg-light text-dark border">Phòng #@p.MaPhienHoc</span>
+                    </div>
+
+                    <h5 class="fw-bold mb-2">Học sinh: @p.DatLich?.HoSoHocSinh?.NguoiDung?.HoTen</h5>
+                    <p class="text-muted small mb-2">Thời gian: @p.DatLich?.LichRanhGiaoVien?.ThoiGianBatDau.ToString("dd/MM/yyyy HH:mm")</p>
+                    <p class="text-muted small mb-3">Ghi chú: @p.GhiChuBuoiHoc</p>
+
+                    <div class="p-3 bg-light rounded-3 mb-3 border">
+                        <div class="d-flex justify-content-between small">
+                            <span>Link phòng học:</span>
+                            <a href="@p.LinkPhongHoc" target="_blank" class="fw-bold text-warning text-truncate" style="max-width: 250px;">@p.LinkPhongHoc</a>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-auto">
+                        <a href="@p.LinkPhongHoc" target="_blank" class="btn-donet py-1 px-3 small">Vào Giảng Dạy</a>
+                        <button onclick="showToast('Buổi học đã hoàn tất! Tiền tạm giữ 180.000 đ đã chuyển thành 153.000 đ vào ví (đã trừ 15% phí sàn).', 'success')" class="btn-outline-donet py-1 px-3 small">Nghiệm Thu Buổi Dạy</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

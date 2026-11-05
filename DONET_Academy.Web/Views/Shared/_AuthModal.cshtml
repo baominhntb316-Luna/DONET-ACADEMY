@@ -1,0 +1,182 @@
+@* Partial View: Modal Đăng Nhập & Đăng Ký Tài Khoản DONET ACADEMY *@
+<div class="modal fade modal-apple-blur" id="donetAuthModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content auth-modal-content border-0 shadow-lg">
+            <!-- Modal Header -->
+            <div class="modal-header border-0 pb-0 position-relative">
+                <div class="d-flex align-items-center gap-3">
+                    <img src="~/images/mascot_oriole.png" alt="Mascot" width="48" height="48" class="mascot-modal-peek" />
+                    <div>
+                        <h4 class="modal-title fw-bold text-dark mb-0" id="authModalLabel">Gia Nhập DONET ACADEMY</h4>
+                        <p class="small text-muted mb-0">Học tập đỉnh cao, bứt phá điểm số cùng cộng đồng THPT</p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close-apple" data-bs-dismiss="modal" aria-label="Đóng" onclick="closeAuthModal()">✕</button>
+            </div>
+
+            <div class="modal-body px-4 pt-3 pb-4">
+                <!-- Master Segmented Switch: Đăng Nhập vs Đăng Ký -->
+                <div class="auth-mode-segmented mb-4">
+                    <div class="segmented-indicator" id="authModeIndicator"></div>
+                    <button type="button" class="segmented-tab active" id="tabModeLogin" onclick="switchAuthMode('login')">
+                        Đăng Nhập
+                    </button>
+                    <button type="button" class="segmented-tab" id="tabModeRegister" onclick="switchAuthMode('register')">
+                        Đăng Ký Tài Khoản
+                    </button>
+                </div>
+
+                <!-- Sub Segmented Switch: Học Sinh vs Giáo Viên -->
+                <div class="d-flex justify-content-center mb-4">
+                    <div class="role-sub-segmented">
+                        <button type="button" class="role-tab active" id="roleTabStudent" onclick="switchAuthRole('student')">
+                            🎓 Học Sinh THPT
+                        </button>
+                        <button type="button" class="role-tab" id="roleTabTeacher" onclick="switchAuthRole('teacher')">
+                            👨‍🏫 Giảng Viên / Gia Sư
+                        </button>
+                    </div>
+                </div>
+
+                <!-- FORM ĐĂNG NHẬP -->
+                <div id="authLoginForm" class="auth-form-pane">
+                    <form onsubmit="handleDemoLogin(event)">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-dark">Email hoặc Số điện thoại</label>
+                            <input type="text" class="form-control input-apple" id="loginUsername" placeholder="hocsinh@donet.edu.vn hoặc 0912..." required value="an.hocsinh@donet.edu.vn" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-dark">Mật khẩu</label>
+                            <input type="password" class="form-control input-apple" id="loginPassword" placeholder="Nhập mật khẩu..." required value="123456" />
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberMe" checked>
+                                <label class="form-check-label small text-muted" for="rememberMe">
+                                    Ghi nhớ đăng nhập
+                                </label>
+                            </div>
+                            <a href="javascript:void(0)" class="small text-warning fw-semibold text-decoration-none">Quên mật khẩu?</a>
+                        </div>
+                        <button type="submit" class="btn btn-donet-gold w-100 py-2 fs-6 fw-bold shadow-sm">
+                            Đăng Nhập Ngay
+                        </button>
+                    </form>
+                </div>
+
+                <!-- FORM ĐĂNG KÝ HỌC SINH -->
+                <div id="authRegisterStudentForm" class="auth-form-pane d-none">
+                    <form onsubmit="handleDemoRegister(event, 'Học sinh')">
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark">Họ và tên học sinh *</label>
+                                <input type="text" class="form-control input-apple" placeholder="Nguyễn Văn An" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark">Số điện thoại *</label>
+                                <input type="tel" class="form-control input-apple" placeholder="0987 654 321" required />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-dark">Địa chỉ Email *</label>
+                            <input type="email" class="form-control input-apple" placeholder="an.student@gmail.com" required />
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark">Khối lớp *</label>
+                                <select class="form-select input-apple" required>
+                                    <option value="12" selected>Lớp 12 (Ôn thi Tốt nghiệp THPT)</option>
+                                    <option value="11">Lớp 11</option>
+                                    <option value="10">Lớp 10</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark">Tổ hợp môn quan tâm *</label>
+                                <select class="form-select input-apple" required>
+                                    <option value="KHTN" selected>Khoa học Tự nhiên (Toán - Lí - Hóa - Sinh)</option>
+                                    <option value="KHXH">Khoa học Xã hội (Văn - Sử - Địa - GDCD)</option>
+                                    <option value="A00">Khối A00 (Toán - Lí - Hóa)</option>
+                                    <option value="B00">Khối B00 (Toán - Hóa - Sinh)</option>
+                                    <option value="D01">Khối D01 (Toán - Văn - Anh)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark">Mật khẩu *</label>
+                                <input type="password" class="form-control input-apple" placeholder="Tối thiểu 6 ký tự" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark">Xác nhận mật khẩu *</label>
+                                <input type="password" class="form-control input-apple" placeholder="Nhập lại mật khẩu" required />
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-donet-gold w-100 py-2 fs-6 fw-bold shadow-sm">
+                            Đăng Ký Tài Khoản Học Sinh
+                        </button>
+                    </form>
+                </div>
+
+                <!-- FORM ĐĂNG KÝ GIÁO VIÊN / GIA SƯ -->
+                <div id="authRegisterTeacherForm" class="auth-form-pane d-none">
+                    <form onsubmit="handleDemoRegister(event, 'Giáo viên')">
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark">Họ và tên giảng viên *</label>
+                                <input type="text" class="form-control input-apple" placeholder="ThS. Nguyễn Văn Bình" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark">Số điện thoại liên hệ *</label>
+                                <input type="tel" class="form-control input-apple" placeholder="0912 345 678" required />
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark">Email công vụ / cá nhân *</label>
+                                <input type="email" class="form-control input-apple" placeholder="binh.teacher@donet.edu.vn" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark">Môn giảng dạy chính *</label>
+                                <select class="form-select input-apple" required>
+                                    <option value="Toan" selected>Toán học THPT</option>
+                                    <option value="VatLi">Vật lí</option>
+                                    <option value="HoaHoc">Hóa học</option>
+                                    <option value="SinhHoc">Sinh học</option>
+                                    <option value="TiengAnh">Tiếng Anh</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark">Học vị / Đơn vị công tác *</label>
+                                <input type="text" class="form-control input-apple" placeholder="Thạc sĩ Sư phạm - ĐH Sư Phạm TP.HCM" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark">Link CV / Hồ sơ năng lực (PDF, Drive) *</label>
+                                <input type="url" class="form-control input-apple" placeholder="https://drive.google.com/..." required />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold text-dark">Giới thiệu ngắn gọn kinh nghiệm giảng dạy</label>
+                            <textarea class="form-control input-apple" rows="2" placeholder="Ví dụ: 8 năm luyện thi THPT Quốc gia, đạt nhiều giải giáo viên dạy giỏi..."></textarea>
+                        </div>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark">Mật khẩu *</label>
+                                <input type="password" class="form-control input-apple" placeholder="Tối thiểu 6 ký tự" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold text-dark">Xác nhận mật khẩu *</label>
+                                <input type="password" class="form-control input-apple" placeholder="Nhập lại mật khẩu" required />
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-donet-gold w-100 py-2 fs-6 fw-bold shadow-sm">
+                            Nộp Hồ Sơ Đăng Ký Giảng Viên
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

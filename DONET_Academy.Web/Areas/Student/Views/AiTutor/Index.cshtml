@@ -1,0 +1,83 @@
+@model DONET_Academy.Core.Entities.QuotaAI
+@{
+    ViewData["Title"] = "Trợ Lý Gia Sư AI Tutor";
+}
+
+<div class="container py-4" style="max-width: 900px;">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h2 class="fw-bold mb-1">Gia Sư AI Tutor DONET</h2>
+            <p class="text-muted mb-0">Hỏi đáp công thức, giải thích phương pháp giải Toán, Lí, Hóa tức thì 24/7</p>
+        </div>
+        <div class="card p-2 px-3 border bg-white rounded-pill text-end shadow-sm">
+            <span class="small text-muted">Hạn mức hỏi hôm nay:</span>
+            <strong class="text-warning">16 / 20 lượt</strong>
+        </div>
+    </div>
+
+    <!-- AI Chat Box -->
+    <div class="card-donet p-0 overflow-hidden mb-3">
+        <!-- Messages Area -->
+        <div class="p-4 d-flex flex-column gap-3" style="min-height: 420px; background: #FAF8F5;" id="chatArea">
+            <!-- AI Welcome Message -->
+            <div class="d-flex gap-3 align-items-start" style="max-width: 80%;">
+                <img src="~/images/mascot_oriole.png" alt="AI Mascot" width="40" height="40" class="rounded-circle border bg-white p-1" />
+                <div class="p-3 bg-white border rounded-4 shadow-sm">
+                    <div class="fw-bold small text-warning mb-1">Bé Chim Hoàng Anh AI</div>
+                    <div class="small text-dark">
+                        Chào An! Mình là Trợ lý học tập AI của DONET Academy. Bạn đang gặp khúc mắc ở bài toán, hiện tượng vật lí hay chuỗi phản ứng hóa học nào? Cứ gõ vào bên dưới hoặc chọn gợi ý bên dưới nhé!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Message Sample -->
+            <div class="d-flex gap-3 align-items-start align-self-end flex-row-reverse" style="max-width: 80%;">
+                <div class="p-3 text-white rounded-4 shadow-sm" style="background: var(--gradient-primary);">
+                    <div class="small">
+                        Giải thích giúp mình tại sao este no đơn chức mạch hở lại có công thức phân tử là CnH2nO2 (n >= 2) với?
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Response Sample -->
+            <div class="d-flex gap-3 align-items-start" style="max-width: 80%;">
+                <img src="~/images/mascot_oriole.png" alt="AI Mascot" width="40" height="40" class="rounded-circle border bg-white p-1" />
+                <div class="p-3 bg-white border rounded-4 shadow-sm">
+                    <div class="fw-bold small text-warning mb-1">Bé Chim Hoàng Anh AI</div>
+                    <div class="small text-dark">
+                        Bởi vì:
+                        <ul class="mb-1 mt-1 ps-3">
+                            <li>Este no, đơn chức, mạch hở được tạo thành từ axit no đơn chức (R-COOH) và ancol no đơn chức (R'-OH).</li>
+                            <li>Trong phân tử có chứa <strong>1 nhóm chức este -COO-</strong>, nghĩa là có đúng <strong>1 liên kết đôi C=O (độ bất bão hòa k = 1)</strong>.</li>
+                            <li>Gốc hiđrocacbon đều no và mạch hở nên công thức chung luôn tuân theo dạng: <strong>CnH2nO2 (với n &ge; 2)</strong>. Este nhỏ nhất là H-COO-CH3 (C2H4O2)!</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Box -->
+        <div class="p-3 bg-white border-top d-flex gap-2 align-items-center">
+            <input type="text" id="aiInput" class="form-control rounded-pill px-3 py-2 border" placeholder="Nhập câu hỏi bài tập của bạn (Toán, Lí, Hóa, Sinh)..." />
+            <button onclick="handleAiSend()" class="btn-donet px-4 py-2">Gửi Hỏi</button>
+        </div>
+    </div>
+
+    <!-- Suggested Quick Prompts -->
+    <div class="d-flex gap-2 flex-wrap">
+        <span class="small text-muted align-self-center">Gợi ý nhanh:</span>
+        <button onclick="document.getElementById('aiInput').value='Công thức tính nhanh bán kính mặt cầu ngoại tiếp lăng trụ đứng';" class="btn-outline-donet py-1 px-3 small">Bán kính mặt cầu lăng trụ</button>
+        <button onclick="document.getElementById('aiInput').value='Phương pháp quy đổi Este peptit điểm 9+';" class="btn-outline-donet py-1 px-3 small">Quy đổi este peptit</button>
+        <button onclick="document.getElementById('aiInput').value='Cách nhớ nhanh các công thức dao động điều hòa';" class="btn-outline-donet py-1 px-3 small">Công thức dao động cơ</button>
+    </div>
+</div>
+
+<script>
+    function handleAiSend() {
+        const input = document.getElementById('aiInput');
+        if (!input.value.trim()) return;
+        showToast('Trợ lý AI đang phân tích dữ liệu và soạn thảo lời giải...', 'info');
+        input.value = '';
+    }
+</script>
+

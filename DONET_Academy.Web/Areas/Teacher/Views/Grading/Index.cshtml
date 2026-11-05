@@ -1,0 +1,53 @@
+@model List<DONET_Academy.Core.Entities.BaiTapGiao>
+@{
+    ViewData["Title"] = "Chấm Bài Tập Học Sinh";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Quản Lý & Chấm Bài Tập Học Sinh</h2>
+            <p class="text-muted mb-0">Xem danh sách bài tập đã giao và chấm điểm bài nộp của học sinh</p>
+        </div>
+    </div>
+
+    @foreach (var bt in Model)
+    {
+        <div class="card-donet mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                    <span class="badge bg-warning text-dark mb-1">@bt.MonHoc?.TenMonHoc</span>
+                    <h5 class="fw-bold mb-0">@bt.TieuDe</h5>
+                </div>
+                <span class="text-danger small fw-semibold">Hạn nộp: @bt.HanNop.ToString("dd/MM/yyyy")</span>
+            </div>
+
+            <h6 class="fw-bold small text-muted mb-2">DANH SÁCH BÀI NỘP CỦA HỌC SINH:</h6>
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr class="text-muted small">
+                            <th>HỌC SINH</th>
+                            <th>NGÀY NỘP</th>
+                            <th>ĐIỂM SỐ</th>
+                            <th>NHẬN XÉT CỦA BẠN</th>
+                            <th>THAO TÁC</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Nguyễn Văn An</strong> (Khối 12)</td>
+                            <td class="small text-muted">03/11/2026 21:00</td>
+                            <td><span class="badge bg-success fs-6">9.0 / 10</span></td>
+                            <td class="small text-muted">Trình bày cẩn thận câu hình học không gian, cần chú ý điều kiện nghiệm.</td>
+                            <td>
+                                <button onclick="showToast('Mở cửa sổ sửa điểm & nhận xét bài tập...', 'info')" class="btn-outline-donet py-1 px-3 small">Sửa điểm</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>
+

@@ -1,0 +1,209 @@
+@{
+    var currentArea = ViewContext.RouteData.Values["area"]?.ToString() ?? "";
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+    var isTeacher = currentArea == "Teacher";
+    var isStudent = currentArea == "Student";
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - DONET ACADEMY</title>
+    
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/tokens.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/animations.css" asp-append-version="true" />
+    <style>
+        .navbar-donet {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        }
+        .brand-logo-img {
+            height: 46px;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.25s var(--ease-apple);
+        }
+        .brand-logo-img:hover {
+            transform: scale(1.03);
+        }
+        .footer-donet {
+            background: #FFFFFF;
+            border-top: 1px solid var(--card-border);
+            padding: 48px 0 24px;
+            color: var(--text-muted);
+            margin-top: 80px;
+        }
+    </style>
+</head>
+<body class="bg-body-tertiary">
+    <header>
+        <nav class="navbar navbar-expand-xl navbar-donet">
+            <div class="container-fluid px-lg-5">
+                <!-- Khu vực 1: Logo Brand Chính Thức -->
+                <a class="navbar-brand d-flex align-items-center me-3" href="/">
+                    <img src="~/images/donet_logo.png" alt="DONET ACADEMY" class="brand-logo-img" />
+                </a>
+
+                <!-- Khu vực 2: Role Switcher (Chỉ chuyển đổi linh hoạt Học Sinh THPT & Giáo Viên) -->
+                <div class="role-segmented-container me-3 my-1" data-role="@(isTeacher ? "Teacher" : "Student")">
+                    <div class="role-sliding-pill"></div>
+                    <a href="/Student/Dashboard" class="role-tab-link @(!isTeacher ? "active" : "")">
+                        🎓 Học Sinh THPT
+                    </a>
+                    <a href="/Teacher/Dashboard" class="role-tab-link @(isTeacher ? "active" : "")">
+                        👨‍🏫 Giáo Viên
+                    </a>
+                </div>
+
+                <!-- Khu vực 3: Cụm Bé Chim Hoàng Anh & Auth Capsule (ĐẶT BÊN TRÁI NÚT TRANG CHỦ / MENU ĐIỀU HƯỚNG) -->
+                <div class="auth-mascot-capsule me-auto my-1" id="authMascotCapsule">
+                    <!-- Bong bóng lời nhắc thông minh: Căn phía trên, tự động tắt ngay khi hover hoặc click -->
+                    <div class="mascot-speech-bubble" id="mascotBubble">
+                        <span class="bubble-text">Học cùng tớ nhé! ✨</span>
+                        <div class="bubble-tail"></div>
+                    </div>
+
+                    <!-- Khung chứa dạng viên nang (Capsule) chứa Bé Chim 2D Rigging và dải nút Auth -->
+                    <div class="mascot-dock-container" id="mascotDockContainer">
+                        <!-- Bé Chim Hoàng Anh 2D SVG Rigging: Click sẽ yên vị bên trái nút Đăng Nhập -->
+                        <div class="mascot-avatar-trigger oriole-rig-trigger" id="mascotHeaderAvatar" title="Bé Chim Hoàng Anh — Bấm để mở Đăng Nhập / Đăng Ký">
+                            @await Html.PartialAsync("_MascotOrioleRig", new ViewDataDictionary(ViewData) { { "Size", "header" } })
+                        </div>
+
+                        <!-- Dải nút Đăng Nhập / Đăng Ký mở rộng khi click hoặc hover -->
+                        <div class="auth-buttons-reveal" id="authButtonsReveal">
+                            <button type="button" class="btn-auth-switch" onclick="openAuthModal('login')">
+                                Đăng Nhập
+                            </button>
+                            <button type="button" class="btn-auth-switch btn-auth-register" onclick="openAuthModal('register')">
+                                Đăng Ký
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nút Toggler trên màn hình di động -->
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Khu vực 4: Menu Điều Hướng (Nằm bên phải, không bao giờ bị Bé Chim hay bong bóng che khuất) -->
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <ul class="navbar-nav ms-auto align-items-xl-center gap-1 my-2 my-xl-0">
+                        @if (isStudent)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link-dynamic @(currentController == "Courses" ? "active" : "")" href="/Student/Courses">Khóa Học Tri Thức</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link-dynamic @(currentController == "Exams" ? "active" : "")" href="/Student/Exams">Phòng Luyện Thi</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link-dynamic @(currentController == "Tutors" ? "active" : "")" href="/Student/Tutors">Gia Sư 1-1</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link-dynamic @(currentController == "Assignments" ? "active" : "")" href="/Student/Assignments">Bài Tập Giao</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link-dynamic @(currentController == "Missions" ? "active" : "")" href="/Student/Missions">Nhiệm Vụ XP</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link-dynamic @(currentController == "AiTutor" ? "active" : "")" href="/Student/AiTutor">AI Tutor</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link-dynamic @(currentController == "Community" ? "active" : "")" href="/Student/Community">Cộng Đồng</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link-dynamic @(currentController == "Wallet" ? "active" : "") text-warning fw-bold" href="/Student/Wallet">
+                                    💰 850.000 đ
+                                </a>
+                            </li>
+                        }
+                        else if (isTeacher)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link-dynamic @(currentController == "Schedule" ? "active" : "")" href="/Teacher/Schedule">Quản Lý Lịch Dạy</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link-dynamic @(currentController == "Classrooms" ? "active" : "")" href="/Teacher/Classrooms">Lớp Học 1-1</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link-dynamic @(currentController == "ExamBank" ? "active" : "")" href="/Teacher/ExamBank">Soạn Đề & Giao Bài</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link-dynamic @(currentController == "Grading" ? "active" : "")" href="/Teacher/Grading">Chấm Bài Tập</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link-dynamic @(currentController == "Wallet" ? "active" : "") text-success fw-bold" href="/Teacher/Wallet">
+                                    💼 Ví: 18.500.000 đ
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link-dynamic @(currentController == "Home" && currentAction == "Index" ? "active" : "")" href="/">Trang Chủ</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link-dynamic @(currentController == "Home" && currentAction == "About" ? "active" : "")" href="/Home/About">Về DONET</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link-dynamic @(currentController == "Home" && currentAction == "Pricing" ? "active" : "")" href="/Home/Pricing">Gói Tri Thức</a>
+                            </li>
+                        }
+
+                        @if (isStudent || isTeacher)
+                        {
+                            <!-- Profile Pill khi đã trong phân hệ -->
+                            <li class="nav-item ms-xl-2">
+                                <a href="@(isTeacher ? "/Teacher/Dashboard" : "/Student/Dashboard")" class="d-inline-flex align-items-center gap-2 p-1 pe-3 bg-white border rounded-pill shadow-sm text-dark text-decoration-none">
+                                    <span class="badge bg-warning text-dark rounded-circle p-1">👤</span>
+                                    <span class="fw-bold small">
+                                        @(isTeacher ? "ThS. Văn Bình" : "Nguyễn Văn An")
+                                    </span>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="pb-5 page-transition-container">
+        @RenderBody()
+    </main>
+
+    <!-- Partial View Modal Đăng nhập / Đăng ký chi tiết -->
+    @await Html.PartialAsync("_AuthModal")
+
+    <footer class="footer-donet">
+        <div class="container text-center">
+            <div class="d-flex justify-content-center align-items-center gap-3 mb-3">
+                <img src="~/images/donet_logo.png" alt="DONET Logo" height="42" />
+                <span class="fw-bold text-dark fs-5">DONET ACADEMY — Nền Tảng Học Tập Trực Tuyến Đa Môn THPT</span>
+            </div>
+            <p class="small text-muted mb-2 max-w-600 mx-auto">
+                Hệ sinh thái học tập cá nhân hóa chuẩn cấu trúc kỳ thi THPT Quốc gia • Hệ thống video tri thức & ngân hàng đề thi đa tầng • Kết nối gia sư 1-1 chất lượng cao • Trợ lý AI đồng hành 24/7.
+            </p>
+            <p class="small text-muted mb-0">
+                &copy; 2026 DONET Academy. Bản quyền thuộc về Hệ thống Giáo dục Trực tuyến DONET. Mọi quyền được bảo lưu.
+            </p>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

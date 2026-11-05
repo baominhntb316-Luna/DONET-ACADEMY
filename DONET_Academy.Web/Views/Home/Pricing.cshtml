@@ -1,0 +1,51 @@
+@model List<DONET_Academy.Core.Entities.GoiPremium>
+@{
+    ViewData["Title"] = "Gói Học Tập Premium";
+}
+
+<div class="container py-5 text-center">
+    <div class="mb-5" style="max-width: 650px; margin: 0 auto;">
+        <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold mb-2">ĐẶC QUYỀN HỌC TẬP</span>
+        <h2 class="display-6 fw-bold mb-2">Gói Hội Viên Học Tốt Toàn Diện</h2>
+        <p class="text-muted">Nâng cấp tài khoản để mở khóa toàn bộ kho đề thi tuyển chọn và tăng gấp 5 lần lượt hỏi trợ lý AI</p>
+    </div>
+
+    <div class="row justify-content-center g-4">
+        <div class="col-md-5">
+            <div class="card-donet p-4 text-start h-100">
+                <h4 class="fw-bold mb-1">Gói Tiêu Chuẩn</h4>
+                <p class="text-muted small mb-3">Dành cho học sinh tự học cơ bản</p>
+                <div class="h2 fw-bold text-dark mb-4">0 đ <span class="fs-6 text-muted font-normal">/ mãi mãi</span></div>
+                
+                <ul class="list-unstyled d-flex flex-column gap-2 mb-4 small">
+                    <li>✓ Xem các video bài giảng miễn phí</li>
+                    <li>✓ Thi thử 3 đề trắc nghiệm mỗi tuần</li>
+                    <li>✓ Giới hạn 20 câu hỏi Trợ lý AI / ngày</li>
+                    <li>✓ Tham gia diễn đàn hỏi bài cộng đồng</li>
+                </ul>
+                <a href="/Student/Dashboard" class="btn-outline-donet w-100 text-center mt-auto">Đang Sử Dụng</a>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="card-donet p-4 text-start h-100" style="border: 2px solid var(--primary-yellow); box-shadow: 0 10px 30px rgba(252, 183, 18, 0.2);">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <h4 class="fw-bold mb-0 text-dark">Gói DONET Premium</h4>
+                    <span class="badge bg-warning text-dark">Khuyên dùng</span>
+                </div>
+                <p class="text-muted small mb-3">Bứt phá điểm 9+ toàn diện</p>
+                <div class="h2 fw-bold text-dark mb-4">99.000 đ <span class="fs-6 text-muted font-normal">/ tháng</span></div>
+                
+                <ul class="list-unstyled d-flex flex-column gap-2 mb-4 small">
+                    <li>✓ <strong>Mở khóa 100%</strong> toàn bộ khóa học tri thức</li>
+                    <li>✓ Không giới hạn làm đề thi và xem giải chi tiết</li>
+                    <li>✓ <strong>Không giới hạn lượt hỏi</strong> Gia sư AI 24/7</li>
+                    <li>✓ Ưu đãi giảm 10% học phí gia sư 1-1</li>
+                    <li>✓ Huy hiệu Avatar Chim Hoàng Anh Vàng độc quyền</li>
+                </ul>
+                <button onclick="showToast('Mô phỏng nâng cấp Premium thành công! Hạn dùng: 30 ngày.', 'success')" class="btn-donet w-100 text-center mt-auto">Nâng Cấp Premium Ngay</button>
+            </div>
+        </div>
+    </div>
+</div>
+

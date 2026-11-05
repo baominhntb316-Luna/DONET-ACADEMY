@@ -1,0 +1,60 @@
+@model List<DONET_Academy.Core.Entities.BoDe>
+@{
+    ViewData["Title"] = "Ngân Hàng Đề Thi & Giao Bài";
+    var questions = ViewBag.Questions as List<DONET_Academy.Core.Entities.CauHoi> ?? new();
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Ngân Hàng Câu Hỏi & Soạn Đề Thi</h2>
+            <p class="text-muted mb-0">Quản lý kho câu hỏi trắc nghiệm, tạo đề khảo sát và giao bài cho học sinh</p>
+        </div>
+        <button onclick="showToast('Mở trình soạn thảo câu hỏi trắc nghiệm mới...', 'info')" class="btn-donet">+ Thêm Câu Hỏi Mới</button>
+    </div>
+
+    <!-- Exam Sets Grid -->
+    <h4 class="fw-bold mb-3">Bộ Đề Đã Xuất Bản</h4>
+    <div class="row g-4 mb-5">
+        @foreach (var ex in Model)
+        {
+            <div class="col-md-6">
+                <div class="card-donet h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="badge bg-warning text-dark">@ex.MonHoc?.TenMonHoc</span>
+                        <span class="text-muted small">@ex.ThoiGianLamBaiPhut phút &bull; @ex.SoCauHoi câu</span>
+                    </div>
+                    <h5 class="fw-bold mb-2">@ex.TieuDe</h5>
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-auto">
+                        <span class="text-success small fw-semibold">Đã xuất bản</span>
+                        <button onclick="showToast('Giao bộ đề thi này thành bài tập về nhà cho học sinh...', 'info')" class="btn-outline-donet py-1 px-3 small">Giao Cho Học Sinh</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Question Bank Preview -->
+    <h4 class="fw-bold mb-3">Ngân Hàng Câu Hỏi (Mẫu Câu Hỏi & Đáp Án)</h4>
+    <div class="card-donet">
+        @foreach (var q in questions)
+        {
+            <div class="p-3 border-bottom">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="badge bg-light text-dark border">#CH-@q.MaCauHoi</span>
+                    <span class="text-muted small">Mức độ: @q.MucDo</span>
+                </div>
+                <div class="fw-semibold mb-2">@q.NoiDung</div>
+                <div class="small text-muted mb-2">
+                    Đáp án:
+                    @foreach (var a in q.DapAns)
+                    {
+                        <span class="badge @(a.LaDapAnDung ? "bg-success" : "bg-light text-dark border") me-1">@a.NoiDung</span>
+                    }
+                </div>
+                <div class="small text-info">Giải thích: @q.GiaiThichChiTiet</div>
+            </div>
+        }
+    </div>
+</div>
+

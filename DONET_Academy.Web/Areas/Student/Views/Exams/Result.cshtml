@@ -1,0 +1,37 @@
+@model DONET_Academy.Core.Entities.BoDe
+@{
+    ViewData["Title"] = "Kết quả bài thi";
+}
+
+<div class="container py-5 text-center" style="max-width: 680px;">
+    <div class="card-donet p-5">
+        <div class="mb-3">
+            <img src="~/images/mascot_oriole.png" alt="Chúc mừng" height="120" />
+        </div>
+        <h2 class="fw-bold mb-2">Chúc Mừng Bạn Đã Hoàn Thành Bài Thi!</h2>
+        <p class="text-muted mb-4">@Model?.TieuDe</p>
+
+        <div class="card p-4 mb-4 bg-light border-0 rounded-4">
+            <div class="row text-center">
+                <div class="col-4">
+                    <span class="text-muted small">Điểm số</span>
+                    <div class="h2 fw-bold text-success mt-1 mb-0">9.2 / 10</div>
+                </div>
+                <div class="col-4 border-start border-end">
+                    <span class="text-muted small">Số câu đúng</span>
+                    <div class="h2 fw-bold text-dark mt-1 mb-0">46 / 50</div>
+                </div>
+                <div class="col-4">
+                    <span class="text-muted small">Thưởng XP</span>
+                    <div class="h2 fw-bold text-warning mt-1 mb-0">+100 XP</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center gap-3">
+            <a href="/Student/Exams" class="btn-outline-donet">Về danh sách đề thi</a>
+            <a href="/Student/Dashboard" class="btn-donet">Về Dashboard học tập</a>
+        </div>
+    </div>
+</div>
+

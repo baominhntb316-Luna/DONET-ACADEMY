@@ -1,0 +1,46 @@
+@model List<DONET_Academy.Core.Entities.KhoaHocTriThuc>
+@{
+    ViewData["Title"] = "Kho Khóa Học Tri Thức";
+    var subjects = ViewBag.Subjects as List<DONET_Academy.Core.Entities.MonHoc> ?? new();
+    var selectedSubId = ViewBag.SelectedSubjectId as int?;
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Khóa Học Tri Thức THPT</h2>
+            <p class="text-muted mb-0">Học trực tuyến bài bản theo khối lớp và chuyên đề thi THPT Quốc gia</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="/Student/Courses" class="role-badge @(!selectedSubId.HasValue ? "active" : "")">Tất cả</a>
+            @foreach (var s in subjects)
+            {
+                <a href="/Student/Courses?monHocId=@s.MaMonHoc" class="role-badge @(selectedSubId == s.MaMonHoc ? "active" : "")">@s.TenMonHoc</a>
+            }
+        </div>
+    </div>
+
+    <div class="row g-4">
+        @foreach (var c in Model)
+        {
+            <div class="col-md-4">
+                <div class="card-donet card-donet-interactive h-100 d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="badge bg-warning text-dark">@c.MonHoc?.TenMonHoc</span>
+                        <span class="badge bg-light text-dark border">@c.KhoiLop?.TenKhoi</span>
+                    </div>
+                    <h5 class="fw-bold mb-2">@c.TenKhoaHoc</h5>
+                    <p class="text-muted small mb-3 flex-grow-1">@c.MoTa</p>
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <div>
+                            <span class="text-muted small">Học phí:</span>
+                            <span class="fw-bold text-dark fs-5 ms-1">@(c.GiaTien > 0 ? c.GiaTien.ToString("N0") + " đ" : "Miễn phí")</span>
+                        </div>
+                        <a href="/Student/Courses/Details/@c.MaKhoaHoc" class="btn-donet py-1 px-3">Chi tiết</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

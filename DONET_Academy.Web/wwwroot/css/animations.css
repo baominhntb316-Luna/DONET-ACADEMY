@@ -1,0 +1,783 @@
+/* ========================================================
+   DONET ACADEMY — EMIL KOWALSKI & APPLE DESIGN SYSTEM
+   Micro-interactions • Springs • Composite-only Transform/Opacity
+   ======================================================== */
+
+:root {
+  --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-press: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========================================================
+   1. NÚT BẤM TƯƠNG TÁC PHẢN HỒI XÚC GIÁC (APPLE-STYLE)
+   ======================================================== */
+.btn-donet,
+.btn-donet-gold {
+  background: var(--gradient-primary);
+  color: #FFFFFF !important;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 10px 24px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(250, 126, 10, 0.25);
+  transition: transform 0.18s var(--ease-apple), box-shadow 0.2s var(--ease-apple);
+  will-change: transform;
+}
+
+.btn-donet:hover,
+.btn-donet-gold:hover {
+  background: var(--gradient-hover);
+  box-shadow: 0 8px 24px rgba(250, 126, 10, 0.45);
+  transform: translateY(-2px);
+  color: #FFFFFF !important;
+}
+
+.btn-donet:active,
+.btn-donet-gold:active,
+.btn:active,
+button:active {
+  transform: scale(0.97) !important;
+  transition: transform 0.08s var(--ease-press) !important;
+}
+
+.btn-outline-donet {
+  background: #FFFFFF;
+  color: var(--text-main) !important;
+  font-weight: 700;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-full);
+  padding: 9px 22px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.18s var(--ease-apple), border-color 0.2s ease-out, background 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.btn-outline-donet:hover {
+  border-color: var(--primary-yellow);
+  background: #FFFBF0;
+  box-shadow: 0 4px 14px rgba(252, 183, 18, 0.2);
+  transform: translateY(-2px);
+}
+
+.btn-outline-donet:active {
+  transform: scale(0.97) !important;
+}
+
+/* ========================================================
+   2. ROLE SWITCHER VỚI THANH TRƯỢT CHỈ BÁO (SLIDING INDICATOR)
+   ======================================================== */
+.role-segmented-container {
+  position: relative;
+  background: #F1EDE4;
+  padding: 4px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.07);
+}
+
+.role-sliding-pill {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  bottom: 4px;
+  width: calc(50% - 4px);
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #FCB712 0%, #FA7E0A 100%);
+  box-shadow: 0 4px 12px rgba(250, 126, 10, 0.35);
+  transition: transform 0.3s var(--ease-apple), background 0.3s var(--ease-apple);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.role-segmented-container[data-role="Teacher"] .role-sliding-pill {
+  transform: translateX(100%);
+}
+
+.role-tab-link {
+  position: relative;
+  z-index: 2;
+  padding: 7px 18px;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #78716C;
+  text-decoration: none;
+  border: none;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  transition: color 0.2s var(--ease-apple);
+}
+
+.role-tab-link:hover {
+  color: #1C1917;
+}
+
+.role-tab-link.active {
+  color: #FFFFFF !important;
+}
+
+/* ========================================================
+   3. NAV LINKS VỚI HIỆU ỨNG GLOW VÀ ACTIVE GRADIENT PILL
+   ======================================================== */
+.nav-link-dynamic {
+  position: relative;
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 8px 16px !important;
+  border-radius: var(--radius-full);
+  transition: all 0.22s var(--ease-apple);
+  text-decoration: none;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.nav-link-dynamic:hover {
+  background: rgba(252, 183, 18, 0.16);
+  color: #D97706 !important;
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(252, 183, 18, 0.2);
+}
+
+.nav-link-dynamic.active {
+  background: linear-gradient(135deg, #FCB712 0%, #FA7E0A 100%) !important;
+  color: #FFFFFF !important;
+  font-weight: 700;
+  box-shadow: 0 4px 14px rgba(250, 126, 10, 0.35);
+}
+
+.nav-link-dynamic:active {
+  transform: scale(0.96) !important;
+}
+
+/* ========================================================
+   4. CỤM HEADER BÉ CHIM & AUTH CAPSULE (ĐẶT BÊN TRÁI TRANG CHỦ)
+   ======================================================== */
+.auth-mascot-capsule {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  z-index: 10;
+}
+
+/* Khung chứa dạng viên nang (Capsule) */
+.mascot-dock-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  background: #FFFFFF;
+  border: 1.5px solid #FCD34D;
+  border-radius: var(--radius-full);
+  padding: 3px;
+  box-shadow: 0 4px 14px rgba(252, 183, 18, 0.25);
+  transition: all 0.32s var(--ease-apple);
+}
+
+.mascot-avatar-trigger {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 3;
+  transition: transform 0.3s var(--ease-apple);
+}
+
+.mascot-avatar-trigger:hover {
+  transform: scale(1.06);
+}
+
+/* Dải nút Auth ẩn / hiện */
+.auth-buttons-reveal {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: max-width 0.32s var(--ease-apple), opacity 0.25s var(--ease-apple), padding 0.32s var(--ease-apple);
+}
+
+/* Khi rê chuột hoặc khi đã nhấp chọn (is-docked): mở rộng dải nút */
+.auth-mascot-capsule:hover .auth-buttons-reveal,
+.auth-mascot-capsule.is-docked .auth-buttons-reveal {
+  max-width: 220px;
+  opacity: 1;
+  padding: 0 6px 0 6px;
+  pointer-events: auto;
+}
+
+.auth-mascot-capsule.is-docked .mascot-dock-container {
+  box-shadow: 0 6px 20px rgba(250, 126, 10, 0.35);
+  border-color: #FA7E0A;
+}
+
+.btn-auth-switch {
+  border: none;
+  background: transparent;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: #4B5563;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-apple);
+}
+
+.btn-auth-switch:hover {
+  background: #FFF5DE;
+  color: #B45309;
+}
+
+.btn-auth-switch.btn-auth-register {
+  background: linear-gradient(135deg, #FCB712 0%, #FA7E0A 100%);
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(250, 126, 10, 0.3);
+}
+
+.btn-auth-switch.btn-auth-register:hover {
+  box-shadow: 0 4px 12px rgba(250, 126, 10, 0.45);
+  transform: translateY(-1px);
+}
+
+/* Bong bóng lời nhắc thông minh: Căn bên phải (góc 3 giờ), không bị che khuất */
+.mascot-speech-bubble {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 12px);
+  transform: translateY(-50%);
+  background: #FFFFFF;
+  border: 1px solid rgba(252, 183, 18, 0.55);
+  box-shadow: 0 4px 16px rgba(252, 183, 18, 0.25);
+  padding: 6px 14px;
+  border-radius: 14px;
+  white-space: nowrap;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #B45309;
+  pointer-events: none;
+  z-index: 20;
+  transition: opacity 0.25s var(--ease-apple), transform 0.25s var(--ease-apple);
+  animation: bubbleFloatRight 2.5s ease-in-out infinite alternate;
+}
+
+.mascot-speech-bubble .bubble-tail {
+  position: absolute;
+  top: 50%;
+  left: -5px;
+  width: 10px;
+  height: 10px;
+  background: #FFFFFF;
+  border-bottom: 1px solid rgba(252, 183, 18, 0.55);
+  border-left: 1px solid rgba(252, 183, 18, 0.55);
+  border-top: none;
+  border-right: none;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+/* TẮT NGAY LỜI NHẮC KHI HOVER HOẶC ĐÃ CLICK DOCKED */
+.auth-mascot-capsule:hover .mascot-speech-bubble,
+.auth-mascot-capsule.is-docked .mascot-speech-bubble,
+.mascot-speech-bubble.bubble-hidden {
+  opacity: 0 !important;
+  transform: translateY(-50%) translateX(10px) scale(0.85) !important;
+  pointer-events: none !important;
+}
+
+
+  @keyframes bubbleFloatRight {
+    0% {
+      transform: translateY(-50%) translateX(0px);
+    }
+
+    100% {
+      transform: translateY(-50%) translateX(4px);
+    }
+  }
+
+  /* ========================================================
+   5. BỘ HOẠT ẢNH 2D VECTOR SVG RIGGING CHO BÉ CHIM HOÀNG ANH
+   (CHUYỂN ĐỘNG THẬT SỰ TỪNG BỘ PHẬN: MẮT, MỎ, CÁNH, THÂN)
+   ======================================================== */
+  .oriole-rig-container {
+    display: inline-block;
+    user-select: none;
+  }
+
+  .oriole-rig-header {
+    width: 44px;
+    height: 44px;
+  }
+
+  .oriole-rig-hero {
+    width: 250px;
+    height: 275px;
+    cursor: pointer;
+  }
+
+  .oriole-svg-canvas {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  /* 5.1 CHỚP MẮT TỰ NHIÊN (EYELID BLINK) */
+  .oriole-eyelid {
+    transform-origin: 0 -16px;
+    animation: rigBlink 3.8s infinite ease-in-out;
+  }
+
+  @keyframes rigBlink {
+
+    0%,
+    88%,
+    94%,
+    100% {
+      transform: scaleY(0);
+    }
+
+    90%,
+    92% {
+      transform: scaleY(1);
+    }
+  }
+
+  /* 5.2 CON NGƯƠI LIẾC NHÌN (PUPIL GLANCE) */
+  .oriole-pupil {
+    animation: rigPupilGlance 5.5s infinite ease-in-out;
+  }
+
+  @keyframes rigPupilGlance {
+
+    0%,
+    25%,
+    100% {
+      transform: translate(0, 0);
+    }
+
+    35%,
+    65% {
+      transform: translate(2.5px, 0.5px);
+    }
+
+    75%,
+    90% {
+      transform: translate(-2.5px, -0.5px);
+    }
+  }
+
+  /* 5.3 MỎ VÀ MIỆNG MẤP MÁY KHI NÓI / CƯỜI */
+  .oriole-mouth {
+    transform-origin: center top;
+    animation: rigMouthTalk 2.2s infinite ease-in-out;
+  }
+
+  @keyframes rigMouthTalk {
+
+    0%,
+    100% {
+      transform: scaleY(0.7);
+    }
+
+    50% {
+      transform: scaleY(1.2);
+    }
+  }
+
+  /* 5.4 CÁNH TRÁI VỖ & VẪY CHÀO ĐỘC LẬP */
+  .oriole-wing-left {
+    transform-origin: 46px 120px;
+    transition: transform 0.25s var(--ease-apple);
+  }
+
+  .oriole-wing-right {
+    transform-origin: 154px 120px;
+    transition: transform 0.25s var(--ease-apple);
+  }
+
+  /* Khi hover: Vẫy cánh chào tươi vui */
+  .mascot-waving .oriole-wing-left,
+  .oriole-rig-hero:hover .oriole-wing-left,
+  .auth-mascot-capsule:hover .oriole-wing-left {
+    animation: rigWingWave 0.5s infinite ease-in-out alternate;
+  }
+
+  @keyframes rigWingWave {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(-35deg) translateY(-6px);
+    }
+  }
+
+  /* 5.5 DÂY TUA RUA MŨ CỬ NHÂN ĐUNG ĐƯA */
+  .oriole-tassel {
+    transform-origin: 0 -4px;
+    animation: rigTasselSwing 3s infinite ease-in-out alternate;
+  }
+
+  @keyframes rigTasselSwing {
+    0% {
+      transform: rotate(-4deg);
+    }
+
+    100% {
+      transform: rotate(10deg);
+    }
+  }
+
+  /* 5.6 THÂN CHIM NHÚN NHẢY ĐÀN HỒI (SQUASH & STRETCH BOUNCE) */
+  .oriole-body-bounce .oriole-body-group {
+    animation: rigSquashBounce 2.4s infinite ease-in-out;
+    transform-origin: 100px 200px;
+  }
+
+  @keyframes rigSquashBounce {
+
+    0%,
+    100% {
+      transform: scale(1, 1) translateY(0);
+    }
+
+    40% {
+      transform: scale(1.05, 0.94) translateY(3px);
+    }
+
+    60% {
+      transform: scale(0.96, 1.05) translateY(-8px);
+    }
+  }
+
+  .oriole-body-bounce .oriole-ground-shadow {
+    animation: rigShadowScale 2.4s infinite ease-in-out;
+    transform-origin: 100px 208px;
+  }
+
+  @keyframes rigShadowScale {
+
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.12;
+    }
+
+    60% {
+      transform: scale(0.85);
+      opacity: 0.06;
+    }
+  }
+
+  /* 5.7 BIỂU CẢM NGẠI NGÙNG CÚI ĐẦU */
+  .mascot-shy .oriole-body-group {
+    animation: rigShyBow 1.2s infinite ease-in-out alternate;
+    transform-origin: 100px 200px;
+  }
+
+  @keyframes rigShyBow {
+    0% {
+      transform: rotate(0deg) translateY(0);
+    }
+
+    100% {
+      transform: rotate(3deg) translateY(4px) scale(0.98);
+    }
+  }
+
+  /* 5.8 HÀNH ĐỘNG CLICK HERO: VỖ CÁNH BAY VÚT ĐẾN AI TUTOR */
+  .oriole-fly-zoom {
+    animation: rigFlyAway 0.75s var(--ease-apple) forwards !important;
+  }
+
+  @keyframes rigFlyAway {
+    0% {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+
+    35% {
+      transform: scale(1.25) translateY(-25px) rotate(-12deg);
+    }
+
+    65% {
+      transform: scale(1.4) translateY(-60px) rotate(16deg);
+      opacity: 0.95;
+    }
+
+    100% {
+      transform: scale(0.1) translateY(-220px) translateX(140px);
+      opacity: 0;
+    }
+  }
+
+  /* ========================================================
+   6. ANNOUNCEMENT TICKER BĂNG CHUYỀN TIN TỨC ĐỘNG
+   ======================================================== */
+  .ticker-wrap {
+    width: 100%;
+    overflow: hidden;
+    background: linear-gradient(90deg, #FFFDF9 0%, #FFF5E3 50%, #FFFDF9 100%);
+    border-top: 1px solid rgba(252, 183, 18, 0.3);
+    border-bottom: 1px solid rgba(252, 183, 18, 0.3);
+    padding: 8px 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .ticker-badge {
+    background: linear-gradient(135deg, #FCB712 0%, #FA7E0A 100%);
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 0.78rem;
+    padding: 4px 12px;
+    border-radius: var(--radius-full);
+    margin-left: 20px;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(250, 126, 10, 0.3);
+    z-index: 2;
+  }
+
+  .ticker-move {
+    display: flex;
+    white-space: nowrap;
+    animation: ticker 32s linear infinite;
+    will-change: transform;
+  }
+
+  .ticker-move:hover {
+    animation-play-state: paused;
+  }
+
+  .ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 32px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  .ticker-item a {
+    color: #B45309;
+    text-decoration: underline;
+    font-weight: 700;
+  }
+
+  @keyframes ticker {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* ========================================================
+   7. CHUYỂN TRANG & MODAL PHONG CÁCH APPLE
+   ======================================================== */
+  .page-transition-container {
+    animation: pageFadeIn 0.32s var(--ease-apple) forwards;
+  }
+
+  @keyframes pageFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .modal.modal-apple-blur {
+    z-index: 1065 !important;
+    background: transparent !important;
+  }
+
+  .modal-backdrop.show {
+    backdrop-filter: blur(14px) !important;
+    background-color: rgba(28, 25, 23, 0.5) !important;
+    z-index: 1050 !important;
+  }
+
+  .modal-apple-blur .modal-content {
+    border-radius: 24px;
+    background: #FFFFFF;
+    animation: appleModalPop 0.32s var(--ease-apple) forwards;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18), 0 0 30px rgba(252, 183, 18, 0.12);
+    position: relative;
+    z-index: 1070 !important;
+  }
+
+  @keyframes appleModalPop {
+    0% {
+      opacity: 0;
+      transform: scale(0.94) translateY(12px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .btn-close-apple {
+    background: #F4EFE6;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #78716C;
+    cursor: pointer;
+    transition: all 0.2s var(--ease-apple);
+  }
+
+  .btn-close-apple:hover {
+    background: #E7DFD0;
+    color: #1C1917;
+    transform: rotate(90deg);
+  }
+
+  .auth-mode-segmented {
+    position: relative;
+    background: #F1EDE4;
+    padding: 4px;
+    border-radius: var(--radius-full);
+    display: flex;
+  }
+
+  .auth-mode-segmented .segmented-indicator {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    bottom: 4px;
+    width: calc(50% - 4px);
+    background: #FFFFFF;
+    border-radius: var(--radius-full);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.28s var(--ease-apple);
+    pointer-events: none;
+  }
+
+  .auth-mode-segmented.mode-register .segmented-indicator {
+    transform: translateX(100%);
+  }
+
+  .segmented-tab {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 10px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #78716C;
+    z-index: 2;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .segmented-tab.active {
+    color: #1C1917;
+  }
+
+  .role-sub-segmented {
+    background: #F8F5EE;
+    border: 1px solid var(--card-border);
+    padding: 3px;
+    border-radius: var(--radius-full);
+    display: inline-flex;
+  }
+
+  .role-sub-segmented .role-tab {
+    border: none;
+    background: transparent;
+    padding: 6px 18px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: #78716C;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all 0.2s var(--ease-apple);
+  }
+
+  .role-sub-segmented .role-tab.active {
+    background: linear-gradient(135deg, #FCB712 0%, #FA7E0A 100%);
+    color: #FFFFFF;
+    box-shadow: 0 2px 8px rgba(250, 126, 10, 0.3);
+  }
+
+  .input-apple {
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    transition: all 0.2s var(--ease-apple);
+  }
+
+  .input-apple:focus {
+    border-color: #FCB712;
+    box-shadow: 0 0 0 3px rgba(252, 183, 18, 0.25);
+    outline: none;
+  }
+
+  /* ========================================================
+   8. CARD HOVER NÂNG CAO
+   ======================================================== */
+  .card-donet {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.25s var(--ease-apple), box-shadow 0.25s var(--ease-apple), border-color 0.2s var(--ease-apple);
+    will-change: transform;
+  }
+
+  .card-donet-interactive:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(250, 126, 10, 0.14), 0 2px 6px rgba(0, 0, 0, 0.04);
+    border-color: rgba(252, 183, 18, 0.7);
+  }
+
+  /* ========================================================
+   9. HỖ TRỢ REDUCED MOTION CHO NGƯỜI DÙNG NHẠY CẢM
+   ======================================================== */
+  @media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }

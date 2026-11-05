@@ -1,0 +1,154 @@
+@{
+    ViewData["Title"] = "Bảng Điều Khiển Giảng Viên";
+    var teacher = ViewBag.Teacher as DONET_Academy.Core.Entities.HoSoGiaoVien;
+    var slots = ViewBag.Slots as List<DONET_Academy.Core.Entities.LichRanhGiaoVien> ?? new();
+    var wallet = ViewBag.Wallet as DONET_Academy.Core.Entities.ViTien;
+}
+
+<div class="container py-4">
+    <!-- Teacher Header -->
+    <div class="card-donet p-4 mb-4" style="background: linear-gradient(135deg, rgba(252, 183, 18, 0.12) 0%, rgba(250, 126, 10, 0.05) 100%);">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+            <div class="d-flex align-items-center gap-3">
+                <img src="~/images/avatar_teacher1.png" onerror="this.src='/images/mascot_oriole.png'" width="64" height="64" class="rounded-circle border" style="object-fit:cover;" />
+                <div>
+                    <div class="d-flex align-items-center gap-2">
+                        <h3 class="fw-bold mb-0">@(teacher?.NguoiDung?.HoTen ?? "ThS. Nguyễn Văn Bình")</h3>
+                        <span class="badge bg-success">Đã xác minh</span>
+                    </div>
+                    <span class="text-muted small">Chuyên gia Luyện thi Toán THPT Quốc gia &bull; @(teacher?.SoNamKinhNghiem ?? 10) năm kinh nghiệm</span>
+                </div>
+            </div>
+            <div class="d-flex gap-2">
+                <a href="/Teacher/Schedule" class="btn-donet">+ Mở Ca Dạy Mới</a>
+                <a href="/Teacher/Wallet" class="btn-outline-donet">Rút Tiền Ví</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- KPI Metric Cards (No Teacher XP - Exactly as UML specs) -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card-donet">
+                <div class="text-muted small fw-semibold">ĐÁNH GIÁ TRUNG BÌNH</div>
+                <div class="d-flex align-items-baseline gap-2 mt-2">
+                    <span class="h2 fw-bold text-dark mb-0">@(teacher?.DanhGiaTB ?? 4.9)</span>
+                    <span class="text-warning fs-5">★★★★★</span>
+                </div>
+                <div class="small text-muted mt-1">Từ 128 đánh giá của học sinh</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card-donet">
+                <div class="text-muted small fw-semibold">THU NHẬP THÁNG 10</div>
+                <div class="d-flex align-items-baseline gap-2 mt-2">
+                    <span class="h2 fw-bold text-success mb-0">@((wallet?.SoDuKhaDung ?? 18500000).ToString("N0"))</span>
+                    <span class="text-dark small">đ</span>
+                </div>
+                <div class="small text-success mt-1">+15% so với tháng trước</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card-donet">
+                <div class="text-muted small fw-semibold">SỐ BUỔI DẠY ĐÃ HOÀN THÀNH</div>
+                <div class="d-flex align-items-baseline gap-2 mt-2">
+                    <span class="h2 fw-bold text-dark mb-0">24</span>
+                    <span class="text-muted small">buổi</span>
+                </div>
+                <div class="small text-info mt-1">Tỷ lệ hoàn thành: 100%</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card-donet">
+                <div class="text-muted small fw-semibold">LỊCH DẠY TUẦN NÀY</div>
+                <div class="d-flex align-items-baseline gap-2 mt-2">
+                    <span class="h2 fw-bold text-dark mb-0">@slots.Count</span>
+                    <span class="text-muted small">ca rảnh</span>
+                </div>
+                <div class="small text-warning mt-1">1 ca đã có học sinh đặt</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Management Sections -->
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card-donet mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0">Ca Học Trực Tuyến Sắp Tới Hôm Nay</h5>
+                    <a href="/Teacher/Classrooms" class="text-warning small fw-semibold">Xem tất cả phòng học &rarr;</a>
+                </div>
+                <div class="p-3 bg-light rounded-3 border d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="badge bg-warning text-dark mb-1">Toán 12 — Luyện đề số 3</span>
+                        <div class="fw-bold">Học sinh: Nguyễn Văn An (Khối 12)</div>
+                        <span class="text-muted small">Thời gian: 19:00 - 20:30 Hôm nay</span>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="https://meet.donet.academy/phien-101-toan12" target="_blank" class="btn-donet py-1 px-3 small">Vào phòng dạy</a>
+                        <button onclick="showToast('Đã xác nhận hoàn thành buổi học! Khoản tạm giữ 180.000 đ đã được quyết toán vào ví của bạn (sau trừ 15% phí sàn).', 'success')" class="btn-outline-donet py-1 px-3 small">Nghiệm thu</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teaching Slots Summary -->
+            <div class="card-donet">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0">Danh Sách Ca Rảnh Đã Mở Tuần Này</h5>
+                    <a href="/Teacher/Schedule" class="text-warning small fw-semibold">Quản lý lịch rảnh &rarr;</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr class="text-muted small">
+                                <th>THỜI GIAN</th>
+                                <th>MÔN HỌC</th>
+                                <th>HỌC PHÍ</th>
+                                <th>TRẠNG THÁI</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var s in slots)
+                            {
+                                <tr>
+                                    <td>@s.ThoiGianBatDau.ToString("dd/MM/yyyy HH:mm") - @s.ThoiGianKetThuc.ToString("HH:mm")</td>
+                                    <td><strong>@s.MonHoc?.TenMonHoc</strong></td>
+                                    <td>@s.GiaTien.ToString("N0") đ</td>
+                                    <td>
+                                        @if (s.TrangThai == DONET_Academy.Core.Enums.TrangThaiLichRanh.DaDat)
+                                        {
+                                            <span class="badge bg-danger">Đã có học sinh đặt</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success">Còn trống</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Quick Actions -->
+        <div class="col-lg-4">
+            <div class="card-donet mb-4">
+                <h5 class="fw-bold mb-3">Lối Tắt Giáo Viên</h5>
+                <div class="d-flex flex-column gap-2">
+                    <a href="/Teacher/ExamBank" class="btn-outline-donet justify-content-start py-2">Soạn Đề Thi Mới</a>
+                    <a href="/Teacher/Grading" class="btn-outline-donet justify-content-start py-2">Chấm Bài Tập Học Sinh</a>
+                    <a href="/Teacher/Wallet" class="btn-outline-donet justify-content-start py-2">Cấu Hình Tài Khoản Ngân Hàng</a>
+                </div>
+            </div>
+
+            <div class="card-donet">
+                <h5 class="fw-bold mb-3">Quy Chuẩn Giảng Dạy</h5>
+                <p class="text-muted small mb-2">Vào lớp đúng giờ, kiểm tra camera/micro trước 5 phút.</p>
+                <p class="text-muted small mb-0">Bấm nút "Hoàn thành buổi học" sau khi kết thúc để hệ thống kích hoạt lệnh quyết toán phân chia doanh thu tự động.</p>
+            </div>
+        </div>
+    </div>
+</div>
+

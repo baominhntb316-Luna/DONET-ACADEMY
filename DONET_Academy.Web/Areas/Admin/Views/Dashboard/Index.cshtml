@@ -1,0 +1,112 @@
+@{
+    ViewData["Title"] = "Bảng Điều Khiển Quản Trị Hệ Thống";
+    var totalUsers = ViewBag.TotalUsers ?? 3;
+    var totalStudents = ViewBag.TotalStudents ?? 1;
+    var totalTeachers = ViewBag.TotalTeachers ?? 1;
+    var reports = ViewBag.Reports as List<DONET_Academy.Core.Entities.BaoCaoDoanhThuAdmin> ?? new();
+}
+
+<div class="container py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Cổng Quản Trị Toàn Sàn DONET Academy</h2>
+            <p class="text-muted mb-0">Theo dõi tăng trưởng người dùng, doanh thu phân chia và kiểm duyệt hồ sơ</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="/Admin/TeacherVerifications" class="btn-donet">Duyệt Hồ Sơ Giáo Viên</a>
+            <a href="/Admin/Settings" class="btn-outline-donet">Cấu Hình Sàn</a>
+        </div>
+    </div>
+
+    <!-- Stats KPI Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card-donet">
+                <span class="text-muted small fw-semibold">TỔNG HỌC SINH THPT</span>
+                <div class="h2 fw-bold text-dark mt-2 mb-1">262</div>
+                <div class="small text-success">+18 học sinh tuần này</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card-donet">
+                <span class="text-muted small fw-semibold">GIÁO VIÊN / GIA SƯ</span>
+                <div class="h2 fw-bold text-dark mt-2 mb-1">13</div>
+                <div class="small text-warning">1 giáo viên chờ duyệt hồ sơ</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card-donet">
+                <span class="text-muted small fw-semibold">TỔNG DOANH THU TOÀN SÀN</span>
+                <div class="h2 fw-bold text-success mt-2 mb-1">125.000.000 <span class="fs-6 text-dark">đ</span></div>
+                <div class="small text-muted">Tháng 10/2026</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card-donet">
+                <span class="text-muted small fw-semibold">HOA HỒNG SÀN THỰC THU (15%)</span>
+                <div class="h2 fw-bold text-dark mt-2 mb-1">18.750.000 <span class="fs-6 text-muted">đ</span></div>
+                <div class="small text-info">Giữ lại vận hành máy chủ</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Revenue Split & System Overview -->
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card-donet mb-4">
+                <h5 class="fw-bold mb-3">Báo Cáo Phân Chia Doanh Thu Sàn (BaoCaoDoanhThuAdmin)</h5>
+                <div class="p-3 bg-light rounded-3 border mb-3">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="fw-bold text-dark">Tháng 10/2026: Tổng 125.000.000 đ</span>
+                        <span class="badge bg-success">Đã hoàn tất đối soát</span>
+                    </div>
+                    <div class="progress mb-2" style="height: 12px;">
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: 85%;" title="Doanh thu giáo viên (85%)">85% Giáo viên</div>
+                        <div class="progress-bar bg-dark" role="progressbar" style="width: 15%;" title="Phí duy trì sàn (15%)">15% Sàn</div>
+                    </div>
+                    <div class="d-flex justify-content-between small text-muted">
+                        <span>Chi trả giáo viên: <strong>106.250.000 đ</strong> (85%)</span>
+                        <span>Phí sàn thu: <strong>18.750.000 đ</strong> (15%)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick User Management Preview -->
+            <div class="card-donet">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0">Hồ Sơ Giáo Viên Cần Duyệt Gần Đây</h5>
+                    <a href="/Admin/TeacherVerifications" class="text-warning small fw-semibold">Xem toàn bộ danh sách &rarr;</a>
+                </div>
+                <div class="p-3 bg-light rounded-3 border d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="fw-bold">ThS. Nguyễn Văn Bình — Chuyên môn Toán THPT</div>
+                        <span class="text-muted small">Bằng cấp: ThS ĐH Sư Phạm TP.HCM, Chứng chỉ Nghiệp vụ Sư phạm</span>
+                    </div>
+                    <a href="/Admin/TeacherVerifications" class="btn-donet py-1 px-3 small">Xem xét hồ sơ</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Admin Shortcuts -->
+        <div class="col-lg-4">
+            <div class="card-donet mb-4">
+                <h5 class="fw-bold mb-3">Phân Hệ Quản Trị</h5>
+                <div class="d-flex flex-column gap-2">
+                    <a href="/Admin/Users" class="btn-outline-donet justify-content-start py-2">Quản Lý Danh Sách Tài Khoản</a>
+                    <a href="/Admin/TeacherVerifications" class="btn-outline-donet justify-content-start py-2">Phê Duyệt Hồ Sơ Giáo Viên</a>
+                    <a href="/Admin/Payouts" class="btn-outline-donet justify-content-start py-2">Duyệt Lệnh Rút Tiền Thu Nhập</a>
+                    <a href="/Admin/Settings" class="btn-outline-donet justify-content-start py-2">Cấu Hình Hoa Hồng & Hủy Lịch</a>
+                </div>
+            </div>
+
+            <div class="card-donet">
+                <h5 class="fw-bold mb-2">Trạng Thái Kỹ Thuật</h5>
+                <div class="small text-muted mb-1">&bull; Nền tảng: ASP.NET Core MVC Layered Monolith</div>
+                <div class="small text-muted mb-1">&bull; Database: EF Core Code First (SQL Server Ready)</div>
+                <div class="small text-muted">&bull; Chế độ: InMemory Demo Seeder 55 thực thể</div>
+            </div>
+        </div>
+    </div>
+</div>
+

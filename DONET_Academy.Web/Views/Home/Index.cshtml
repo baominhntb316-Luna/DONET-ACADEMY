@@ -1,0 +1,142 @@
+@{
+    ViewData["Title"] = "Trang Chủ - Nền Tảng Học Tập THPT";
+    var subjects = ViewBag.Subjects as List<DONET_Academy.Core.Entities.MonHoc> ?? new();
+    var courses = ViewBag.Courses as List<DONET_Academy.Core.Entities.KhoaHocTriThuc> ?? new();
+    var teachers = ViewBag.Teachers as List<DONET_Academy.Core.Entities.HoSoGiaoVien> ?? new();
+}
+
+<!-- Dynamic Announcement Ticker Strip -->
+<div class="ticker-wrap mb-4">
+    <div class="ticker-badge">TIN MỚI</div>
+    <div class="ticker-move">
+        <div class="ticker-item">
+            🎉 Chào đón năm học mới: Khai mở lộ trình ôn thi Tốt nghiệp THPT 2026 với ngân hàng 5.000+ câu hỏi chuẩn Bộ GD&ĐT!
+        </div>
+        <div class="ticker-item">
+            🔥 Kết nối ngay với các Thủ khoa & Giảng viên giỏi trong tính năng <a href="/Student/Tutors">Gia Sư 1-1 Ký Quỹ An Toàn</a>.
+        </div>
+        <div class="ticker-item">
+            ✨ Trợ lý <a href="/Student/AiTutor">AI Tutor 24/7</a> giải đáp tức thì mọi bài tập Toán, Lí, Hóa khó nhằn.
+        </div>
+        <div class="ticker-item">
+            🏆 Hoàn thành <a href="/Student/Missions">Nhiệm Vụ Ngày</a> để nhận ngay Huy Hiệu Chăm Chỉ & tích lũy điểm thưởng XP.
+        </div>
+        <!-- Lặp lại để cuộn liên tục -->
+        <div class="ticker-item">
+            🎉 Chào đón năm học mới: Khai mở lộ trình ôn thi Tốt nghiệp THPT 2026 với ngân hàng 5.000+ câu hỏi chuẩn Bộ GD&ĐT!
+        </div>
+        <div class="ticker-item">
+            🔥 Kết nối ngay với các Thủ khoa & Giảng viên giỏi trong tính năng <a href="/Student/Tutors">Gia Sư 1-1 Ký Quỹ An Toàn</a>.
+        </div>
+        <div class="ticker-item">
+            ✨ Trợ lý <a href="/Student/AiTutor">AI Tutor 24/7</a> giải đáp tức thì mọi bài tập Toán, Lí, Hóa khó nhằn.
+        </div>
+        <div class="ticker-item">
+            🏆 Hoàn thành <a href="/Student/Missions">Nhiệm Vụ Ngày</a> để nhận ngay Huy Hiệu Chăm Chỉ & tích lũy điểm thưởng XP.
+        </div>
+    </div>
+</div>
+
+<div class="container py-2">
+    <!-- Hero Section -->
+    <div class="card-donet p-5 mb-5" style="background: radial-gradient(circle at 10% 20%, rgba(252, 183, 18, 0.18) 0%, transparent 50%), radial-gradient(circle at 90% 80%, rgba(250, 126, 10, 0.12) 0%, transparent 50%), #FFFFFF;">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <div class="d-inline-flex align-items-center gap-2 px-3 py-1 bg-white border rounded-pill shadow-sm mb-3">
+                    <span class="badge bg-warning text-dark fw-bold">Mới ra mắt</span>
+                    <span class="small fw-semibold text-muted">Lộ trình học cá nhân hóa cho học sinh THPT 2026</span>
+                </div>
+                <h1 class="display-5 fw-bold mb-3" style="line-height: 1.2;">
+                    Chinh phục <span style="background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Toán – Lí – Hóa – Sinh</span> thật dễ dàng!
+                </h1>
+                <p class="text-muted fs-5 mb-4">
+                    Nền tảng học tập đa môn chuẩn cấu trúc đề thi tốt nghiệp THPT. Học qua video tri thức, luyện đề trắc nghiệm tính giờ và kết nối gia sư 1-1 chất lượng cao.
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a href="/Student/Dashboard" class="btn-donet px-4 py-3 fs-6">Trải Nghiệm Cổng Học Sinh</a>
+                    <a href="/Teacher/Dashboard" class="btn-outline-donet px-4 py-3 fs-6">Dành Cho Giáo Viên</a>
+                </div>
+            </div>
+            <div class="col-lg-5 text-center mt-4 mt-lg-0">
+                <!-- Mascot 2D Vector SVG Rigging chuyển động thật sự: mắt chớp, mỏ mấp máy, cánh vỗ, nhún nhảy -->
+                <div class="oriole-hero-wrapper" title="Bé Chim Hoàng Anh — Bấm để trò chuyện ngay với AI Tutor!">
+                    @await Html.PartialAsync("_MascotOrioleRig", new ViewDataDictionary(ViewData) { { "Size", "hero" } })
+                </div>
+                <div class="small fw-semibold text-muted mt-2">
+                    Bé Chim Hoàng Anh 2D Rigging — <span class="text-warning fw-bold">Nhấp vào bé</span> để trò chuyện cùng AI Tutor!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subjects Grid (Lựa chọn môn học của bạn) -->
+    <div class="mb-5">
+        <div class="text-center mb-4">
+            <h3 class="fw-bold mb-1">Lựa Chọn Môn Học Của Bạn</h3>
+            <p class="text-muted">Chọn môn bạn muốn bứt phá điểm số trong kỳ thi sắp tới</p>
+        </div>
+        <div class="row g-3">
+            @foreach (var s in subjects)
+            {
+                <div class="col-md-2 col-6 col-lg">
+                    <a href="/Student/Courses?monHocId=@s.MaMonHoc" class="card-donet card-donet-interactive text-center py-4 h-100 d-flex flex-column align-items-center justify-content-center text-dark text-decoration-none">
+                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center mb-3" style="width: 54px; height: 54px; border: 1px solid var(--card-border);">
+                            <span class="fs-4">📖</span>
+                        </div>
+                        <h6 class="fw-bold mb-1">@s.TenMonHoc</h6>
+                        <span class="small text-muted">@s.KhoiLop?.TenKhoi</span>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Learning Path Progress Banner -->
+    <div class="card-donet p-4 mb-5" style="border-left: 6px solid var(--primary-orange);">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h4 class="fw-bold mb-1">Lộ Trình Chinh Phục Điểm 9+ Toàn Diện</h4>
+                <p class="text-muted small mb-0">Hệ thống chia làm 5 nấc thang: Lý thuyết nền tảng &rarr; Bài tập cơ bản &rarr; Thực chiến vận dụng &rarr; Đấu trường trắc nghiệm &rarr; Khảo thí thử thách.</p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <a href="/Student/Exams" class="btn-donet">Vào Luyện Thi Thử</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Courses Grid -->
+    <div class="mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h3 class="fw-bold mb-1">Khóa Học Nổi Bật</h3>
+                <p class="text-muted mb-0">Biên soạn bởi các giáo viên giàu kinh nghiệm luyện thi</p>
+            </div>
+            <a href="/Student/Courses" class="text-warning fw-semibold text-decoration-none">Xem tất cả khóa học &rarr;</a>
+        </div>
+        <div class="row g-4">
+            @foreach (var c in courses)
+            {
+                <div class="col-md-4">
+                    <div class="card-donet card-donet-interactive h-100 d-flex flex-column">
+                        <span class="badge bg-warning text-dark align-self-start mb-2">@c.MonHoc?.TenMonHoc</span>
+                        <h5 class="fw-bold mb-2">@c.TenKhoaHoc</h5>
+                        <p class="text-muted small mb-3 flex-grow-1">@c.MoTa</p>
+                        <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                            <span class="fw-bold text-dark fs-5">@(c.GiaTien > 0 ? c.GiaTien.ToString("N0") + " đ" : "Miễn phí")</span>
+                            <a href="/Student/Courses/Details/@c.MaKhoaHoc" class="btn-donet py-1 px-3 small">Xem khóa học</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Call to Action Banner -->
+    <div class="card-donet text-center py-5" style="background: linear-gradient(135deg, rgba(252, 183, 18, 0.15) 0%, rgba(250, 126, 10, 0.08) 100%);">
+        <h3 class="fw-bold mb-2">Sẵn Sàng Bứt Phá Điểm Số Cùng DONET Academy?</h3>
+        <p class="text-muted mb-4">Tham gia cùng hơn 2.500+ học sinh THPT trên cả nước ngay hôm nay!</p>
+        <button type="button" class="btn-donet px-5 py-3 fs-6" onclick="openAuthModal('register')">
+            Đăng Ký Tài Khoản Miễn Phí
+        </button>
+    </div>
+</div>

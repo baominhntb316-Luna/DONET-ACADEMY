@@ -1,0 +1,45 @@
+@model List<DONET_Academy.Core.Entities.BaiTapGiao>
+@{
+    ViewData["Title"] = "Bài Tập Về Nhà";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Bài Tập Về Nhà Được Giáo Viên Giao</h2>
+            <p class="text-muted mb-0">Theo dõi tiến độ làm bài, thời hạn nộp bài và nhận xét chấm điểm chi tiết</p>
+        </div>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="row g-4">
+            @foreach (var bt in Model)
+            {
+                <div class="col-md-6">
+                    <div class="card-donet h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-warning text-dark">@bt.MonHoc?.TenMonHoc</span>
+                            <span class="text-danger small fw-semibold">Hạn nộp: @bt.HanNop.ToString("dd/MM/yyyy")</span>
+                        </div>
+                        <h5 class="fw-bold mb-2">@bt.TieuDe</h5>
+                        <p class="text-muted small mb-3">Giáo viên giao: @bt.HoSoGiaoVien?.NguoiDung?.HoTen</p>
+                        <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-auto">
+                            <span class="badge bg-light text-dark border">Chưa nộp bài</span>
+                            <button onclick="showToast('Mở giao diện nộp file bài làm...', 'info')" class="btn-donet py-1 px-3 small">Nộp bài ngay</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="card-donet text-center py-5">
+            <img src="~/images/mascot_oriole.png" alt="Empty" height="100" class="mb-3" />
+            <h5 class="fw-bold">Hiện Tại Bạn Chưa Có Bài Tập Nào Cần Nộp</h5>
+            <p class="text-muted small mb-0">Thầy cô sẽ giao thêm bài tập sau mỗi buổi học trực tuyến.</p>
+        </div>
+    }
+</div>
+

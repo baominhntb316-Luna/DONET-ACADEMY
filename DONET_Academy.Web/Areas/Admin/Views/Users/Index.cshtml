@@ -1,0 +1,85 @@
+@model List<DONET_Academy.Core.Entities.TaiKhoan>
+@{
+    ViewData["Title"] = "Quản Trị Người Dùng & Phân Quyền";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Quản Trị Người Dùng & Phân Quyền</h2>
+            <p class="text-muted mb-0">Quản lý toàn bộ danh sách tài khoản học sinh, giáo viên và phân quyền vai trò</p>
+        </div>
+        <button onclick="showToast('Mở cửa sổ thêm tài khoản mới...', 'info')" class="btn-donet">+ Thêm Tài Khoản Mới</button>
+    </div>
+
+    <!-- Users Table -->
+    <div class="card-donet">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex gap-2">
+                <input type="text" class="form-control form-control-sm" placeholder="Tìm tên, email..." style="width: 240px;" />
+                <select class="form-select form-select-sm" style="width: 160px;">
+                    <option>Tất cả vai trò</option>
+                    <option>Học sinh</option>
+                    <option>Giáo viên</option>
+                    <option>Admin</option>
+                </select>
+            </div>
+            <span class="text-muted small">Tổng cộng: @Model.Count tài khoản</span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr class="text-muted small">
+                        <th>MÃ TK</th>
+                        <th>HỌ VÀ TÊN</th>
+                        <th>TÊN ĐĂNG NHẬP / EMAIL</th>
+                        <th>VAI TRÒ</th>
+                        <th>NGÀY TẠO</th>
+                        <th>TRẠNG THÁI</th>
+                        <th>THAO TÁC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var tk in Model)
+                    {
+                        var role = tk.TaiKhoan_VaiTros.FirstOrDefault()?.VaiTro?.TenVaiTro ?? "Học sinh";
+                        <tr>
+                            <td>#@tk.MaTaiKhoan</td>
+                            <td><strong>@(tk.NguoiDung?.HoTen ?? "Người dùng")</strong></td>
+                            <td>
+                                <div>@tk.TenDangNhap</div>
+                                <span class="text-muted small">@tk.Email</span>
+                            </td>
+                            <td>
+                                @if (role == "Admin")
+                                {
+                                    <span class="badge bg-dark">Quản trị</span>
+                                }
+                                else if (role == "GiaoVien")
+                                {
+                                    <span class="badge bg-warning text-dark">Giáo viên</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-info text-dark">Học sinh</span>
+                                }
+                            </td>
+                            <td class="small text-muted">@tk.NgayTao.ToString("dd/MM/yyyy")</td>
+                            <td>
+                                <span class="badge bg-success">Đang hoạt động</span>
+                            </td>
+                            <td>
+                                <div class="d-flex gap-1">
+                                    <button onclick="showToast('Chỉnh sửa thông tin tài khoản #@tk.MaTaiKhoan', 'info')" class="btn-outline-donet py-1 px-2 small">Sửa</button>
+                                    <button onclick="showToast('Đã khóa tài khoản #@tk.MaTaiKhoan', 'warning')" class="btn-outline-donet py-1 px-2 small text-danger">Khóa</button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

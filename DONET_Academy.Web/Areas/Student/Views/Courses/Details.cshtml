@@ -1,0 +1,66 @@
+@model DONET_Academy.Core.Entities.KhoaHocTriThuc
+@{
+    ViewData["Title"] = Model.TenKhoaHoc;
+}
+
+<div class="container py-4">
+    <a href="/Student/Courses" class="text-muted small d-inline-block mb-3">&larr; Quay lại danh sách khóa học</a>
+    
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card-donet mb-4">
+                <span class="badge bg-warning text-dark mb-2">@Model.MonHoc?.TenMonHoc — @Model.KhoiLop?.TenKhoi</span>
+                <h2 class="fw-bold mb-3">@Model.TenKhoaHoc</h2>
+                <p class="text-muted">@Model.MoTa</p>
+                <div class="d-flex gap-3 pt-3 border-top">
+                    <div><span class="text-muted small">Số chương:</span> <strong class="ms-1">@Model.ChuongHocs.Count</strong></div>
+                    <div><span class="text-muted small">Tổng bài giảng:</span> <strong class="ms-1">@Model.ChuongHocs.Sum(c => c.BaiHocs.Count)</strong></div>
+                    <div><span class="text-muted small">Cấp chứng nhận:</span> <strong class="ms-1 text-success">Có</strong></div>
+                </div>
+            </div>
+
+            <!-- Curriculum Outline -->
+            <h4 class="fw-bold mb-3">Nội Dung Khóa Học</h4>
+            @foreach (var ch in Model.ChuongHocs)
+            {
+                <div class="card-donet mb-3 p-3">
+                    <h5 class="fw-bold mb-3 text-dark">@ch.TenChuong</h5>
+                    <div class="list-group list-group-flush">
+                        @foreach (var b in ch.BaiHocs)
+                        {
+                            <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
+                                <div>
+                                    <span class="fw-semibold">@b.TieuDe</span>
+                                    <span class="text-muted small ms-2">(@b.ThoiLuongPhut phút)</span>
+                                </div>
+                                <div>
+                                    @if (b.MienPhiXemTruoc)
+                                    {
+                                        <span class="badge bg-success me-2">Học thử</span>
+                                    }
+                                    <a href="/Student/Courses/Learn/@b.MaBaiHoc" class="btn-outline-donet py-1 px-3 small">Vào học</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card-donet sticky-top" style="top: 90px;">
+                <div class="text-center py-3">
+                    <span class="text-muted">Học phí trọn gói</span>
+                    <div class="h2 fw-bold text-dark mt-1 mb-3">@(Model.GiaTien > 0 ? Model.GiaTien.ToString("N0") + " đ" : "Miễn phí")</div>
+                    <button onclick="showToast('Đăng ký khóa học thành công! Bạn có thể vào học ngay.', 'success')" class="btn-donet w-100 py-2 mb-2">Đăng Ký Khóa Học</button>
+                    <button class="btn-outline-donet w-100 py-2">Lưu vào yêu thích</button>
+                </div>
+                <div class="border-top pt-3 mt-2 small text-muted">
+                    <div>Cam kết hoàn tiền trong 7 ngày nếu không hài lòng</div>
+                    <div class="mt-1">Học không giới hạn trên mọi thiết bị</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

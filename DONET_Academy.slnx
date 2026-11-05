@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="DONET_Academy.Core/DONET_Academy.Core.csproj" />
+  <Project Path="DONET_Academy.Infrastructure/DONET_Academy.Infrastructure.csproj" />
+  <Project Path="DONET_Academy.Web/DONET_Academy.Web.csproj" />
+</Solution>

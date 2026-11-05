@@ -1,0 +1,101 @@
+@{
+    ViewData["Title"] = "Cấu Hình Hệ Thống & Báo Cáo Vi Phạm";
+    var commissions = ViewBag.Commissions as List<DONET_Academy.Core.Entities.ChinhSachHoaHong> ?? new();
+    var cancellation = ViewBag.Cancellation as DONET_Academy.Core.Entities.ChinhSachHuy;
+    var levels = ViewBag.Levels as List<DONET_Academy.Core.Entities.CapDo> ?? new();
+    var reports = ViewBag.Reports as List<DONET_Academy.Core.Entities.BaoCaoViPham> ?? new();
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Cấu Hình Sàn & Xử Lý Vi Phạm</h2>
+            <p class="text-muted mb-0">Quản lý tỷ lệ hoa hồng, chính sách hoàn tiền 48 giờ, hệ thống XP và kiểm duyệt nội dung</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Policies Column -->
+        <div class="col-lg-6">
+            <div class="card-donet mb-4">
+                <h5 class="fw-bold mb-3">Chính Sách Hoa Hồng Sàn (ChinhSachHoaHong)</h5>
+                <div class="p-3 bg-light rounded-3 border mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <strong class="text-dark">Tỷ lệ hoa hồng tiêu chuẩn:</strong>
+                        <span class="badge bg-warning text-dark fs-6">15%</span>
+                    </div>
+                    <p class="text-muted small mb-0">Áp dụng tự động khi quyết toán mỗi buổi học gia sư 1-1 thành công.</p>
+                </div>
+            </div>
+
+            <div class="card-donet mb-4">
+                <h5 class="fw-bold mb-3">Chính Sách Hủy Buổi Học 1-1 (ChinhSachHuy)</h5>
+                <div class="p-3 bg-light rounded-3 border mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <strong class="text-dark">Quy tắc 48 giờ:</strong>
+                        <span class="badge bg-success">Hoàn tiền 100%</span>
+                    </div>
+                    <ul class="text-muted small ps-3 mb-0">
+                        <li>Học sinh hủy trước 48 giờ: Hoàn 100% học phí về ví.</li>
+                        <li>Học sinh hủy sau 48 giờ: Hoàn 0% (số tiền tạm giữ được quyết toán đền bù cho giáo viên).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card-donet">
+                <h5 class="fw-bold mb-3">Cấu Hình Cấp Độ Gamification (CapDo)</h5>
+                <div class="list-group list-group-flush">
+                    @foreach (var lv in levels)
+                    {
+                        <div class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
+                            <div>
+                                <span class="fw-bold text-dark">@lv.TenCapDo</span>
+                                <span class="text-muted small ms-2">(Tối thiểu: @lv.DiemXPToiThieu XP)</span>
+                            </div>
+                            <span class="badge bg-light text-dark border">Huy hiệu: @lv.IconHuyHieu</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Moderation Column -->
+        <div class="col-lg-6">
+            <div class="card-donet">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0">Báo Cáo Vi Phạm Cộng Đồng (BaoCaoViPham)</h5>
+                    <span class="badge bg-light text-dark border">@reports.Count báo cáo</span>
+                </div>
+                
+                @if (reports.Any())
+                {
+                    <div class="list-group list-group-flush">
+                        @foreach (var r in reports)
+                        {
+                            <div class="list-group-item px-0 py-3 border-bottom">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="badge bg-danger">Vi phạm @r.LoaiDoiTuong</span>
+                                    <span class="text-muted small">@r.NgayTao.ToString("dd/MM/yyyy")</span>
+                                </div>
+                                <div class="fw-semibold small text-dark mb-1">Đối tượng ID: #@r.MaDoiTuong</div>
+                                <p class="text-muted small mb-2">Lý do: @r.LyDo</p>
+                                <div class="d-flex gap-2">
+                                    <button onclick="showToast('Đã xóa nội dung vi phạm!', 'success')" class="btn btn-sm btn-danger py-0 px-2 small">Xóa nội dung</button>
+                                    <button onclick="showToast('Đã bỏ qua báo cáo này.', 'info')" class="btn-outline-donet py-0 px-2 small">Bỏ qua</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-5 text-muted">
+                        <img src="~/images/mascot_oriole.png" alt="No reports" height="90" class="mb-3" />
+                        <h6>Cộng đồng hiện tại không có nội dung nào bị báo cáo vi phạm.</h6>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

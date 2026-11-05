@@ -1,0 +1,169 @@
+@{
+    ViewData["Title"] = "Góc Học Tập Học Sinh THPT";
+    var student = ViewBag.Student as DONET_Academy.Core.Entities.HoSoHocSinh;
+    var courses = ViewBag.Courses as List<DONET_Academy.Core.Entities.KhoaHocTriThuc> ?? new();
+    var missions = ViewBag.Missions as List<DONET_Academy.Core.Entities.TienDoNhiemVu> ?? new();
+    var upcoming = ViewBag.UpcomingBookings as List<DONET_Academy.Core.Entities.DatLich> ?? new();
+    var wallet = ViewBag.Wallet as DONET_Academy.Core.Entities.ViTien;
+}
+
+<div class="container py-4">
+    <!-- Welcome Hero Banner -->
+    <div class="card-donet p-4 mb-4" style="background: linear-gradient(135deg, rgba(252, 183, 18, 0.15) 0%, rgba(250, 126, 10, 0.08) 100%); border-color: rgba(252, 183, 18, 0.4);">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold">Khối 12 THPT</span>
+                    <span class="badge bg-white text-dark border px-3 py-2 rounded-pill">Cấp độ: @(student?.CapDo?.TenCapDo ?? "Chiến Binh Sách")</span>
+                </div>
+                <h2 class="fw-bold mb-2">Chào mừng trở lại, @(student?.NguoiDung?.HoTen ?? "Nguyễn Văn An")!</h2>
+                <p class="text-muted mb-3">Hôm nay là thời điểm tuyệt vời để hoàn thành nốt 2 bài tập môn Toán và nhận thêm 150 điểm XP!</p>
+                <div class="d-flex gap-2">
+                    <a href="/Student/Courses" class="btn-donet">Tiếp tục học ngay</a>
+                    <a href="/Student/AiTutor" class="btn-outline-donet">Hỏi trợ lý AI</a>
+                </div>
+            </div>
+            <div class="col-md-4 text-center mt-3 mt-md-0">
+                <img src="~/images/mascot_oriole.png" alt="Mascot Chim Hoàng Anh" style="height: 140px; width: auto; filter: drop-shadow(0 6px 15px rgba(252, 183, 18, 0.3));" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Stats Grid -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card-donet">
+                <div class="text-muted small fw-semibold">ĐIỂM KINH NGHIỆM</div>
+                <div class="d-flex align-items-baseline gap-2 mt-2">
+                    <span class="h2 fw-bold text-dark mb-0">@(student?.DiemXP ?? 1450)</span>
+                    <span class="text-warning fw-bold">XP</span>
+                </div>
+                <div class="small text-success mt-1">+120 XP hôm nay</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card-donet">
+                <div class="text-muted small fw-semibold">SỐ DƯ VÍ KHẢ DỤNG</div>
+                <div class="d-flex align-items-baseline gap-2 mt-2">
+                    <span class="h2 fw-bold text-dark mb-0">@((wallet?.SoDuKhaDung ?? 850000).ToString("N0"))</span>
+                    <span class="text-dark small">đ</span>
+                </div>
+                <a href="/Student/Wallet" class="small text-warning fw-semibold mt-1 d-inline-block">Nạp thêm tiền &rarr;</a>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card-donet">
+                <div class="text-muted small fw-semibold">CA DẠY 1-1 SẮP TỚI</div>
+                <div class="d-flex align-items-baseline gap-2 mt-2">
+                    <span class="h2 fw-bold text-dark mb-0">@upcoming.Count</span>
+                    <span class="text-muted small">buổi</span>
+                </div>
+                <div class="small text-info mt-1">Buổi tiếp: 19:00 Ngày mai</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card-donet">
+                <div class="text-muted small fw-semibold">LƯỢT HỎI AI CÒN LẠI</div>
+                <div class="d-flex align-items-baseline gap-2 mt-2">
+                    <span class="h2 fw-bold text-dark mb-0">16 / 20</span>
+                </div>
+                <div class="small text-muted mt-1">Làm mới lúc 00:00</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content: Courses & Today's Missions -->
+    <div class="row g-4">
+        <!-- Left: Continuing Courses -->
+        <div class="col-lg-8">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="fw-bold mb-0">Khóa Học Đang Theo Đuổi</h4>
+                <a href="/Student/Courses" class="text-warning fw-semibold small">Xem tất cả khóa học &rarr;</a>
+            </div>
+
+            <div class="row g-3">
+                @foreach (var c in courses)
+                {
+                    <div class="col-md-6">
+                        <div class="card-donet card-donet-interactive h-100">
+                            <span class="badge bg-warning text-dark align-self-start mb-2">@c.MonHoc?.TenMonHoc</span>
+                            <h5 class="fw-bold mb-2">@c.TenKhoaHoc</h5>
+                            <p class="text-muted small mb-3">@c.MoTa</p>
+                            <div class="progress mb-3" style="height: 6px;">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 45%;"></div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <span class="small text-muted">Đã học: 4/12 bài</span>
+                                <a href="/Student/Courses/Details/@c.MaKhoaHoc" class="btn-donet py-1 px-3 small">Học tiếp</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Upcoming 1-1 Sessions -->
+            <div class="mt-4">
+                <h4 class="fw-bold mb-3">Lịch Gia Sư 1-1 Đã Đặt</h4>
+                @if (upcoming.Any())
+                {
+                    @foreach (var b in upcoming)
+                    {
+                        <div class="card-donet d-flex flex-row justify-content-between align-items-center mb-2 p-3">
+                            <div>
+                                <div class="fw-bold">@b.LichRanhGiaoVien?.MonHoc?.TenMonHoc — Gia sư @b.LichRanhGiaoVien?.HoSoGiaoVien?.NguoiDung?.HoTen</div>
+                                <div class="text-muted small">Thời gian: @b.LichRanhGiaoVien?.ThoiGianBatDau.ToString("dd/MM/yyyy HH:mm") - @b.LichRanhGiaoVien?.ThoiGianKetThuc.ToString("HH:mm")</div>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a href="@b.PhienHoc1V1?.LinkPhongHoc" target="_blank" class="btn-donet py-1 px-3 small">Vào phòng</a>
+                                <button onclick="showToast('Chính sách: Hủy trước 48 giờ hoàn 100% tiền về ví.', 'warning')" class="btn-outline-donet py-1 px-3 small">Chính sách hủy</button>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="card-donet text-center py-4 text-muted">Chưa có ca gia sư nào được đặt. <a href="/Student/Tutors" class="text-warning">Đặt lịch ngay</a>!</div>
+                }
+            </div>
+        </div>
+
+        <!-- Right: Today's Missions -->
+        <div class="col-lg-4">
+            <div class="card-donet h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0">Nhiệm Vụ Hôm Nay</h5>
+                    <span class="badge bg-light text-dark border">Cập nhật lúc 00:00</span>
+                </div>
+                <div class="list-group list-group-flush">
+                    @foreach (var m in missions)
+                    {
+                        <div class="list-group-item px-0 py-3 border-bottom">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="fw-bold text-dark">@m.NhiemVuNgay?.MauNhiemVu?.TenNhiemVu</span>
+                                <span class="badge bg-warning text-dark">+@m.NhiemVuNgay?.MauNhiemVu?.PhanThuongXP XP</span>
+                            </div>
+                            <p class="text-muted small mb-2">@m.NhiemVuNgay?.MauNhiemVu?.MoTa</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="progress flex-grow-1 me-3" style="height: 6px;">
+                                    <div class="progress-bar @(m.DaHoanThanh ? "bg-success" : "bg-warning")" style="width: @(m.DaHoanThanh ? "100%" : "30%")"></div>
+                                </div>
+                                @if (m.DaHoanThanh)
+                                {
+                                    <button class="btn btn-sm btn-outline-success rounded-pill py-0 px-2 small" disabled>Đã nhận</button>
+                                }
+                                else
+                                {
+                                    <button onclick="showToast('Đã ghi nhận nhiệm vụ hoàn tất! +50 XP', 'success')" class="btn-donet py-1 px-2 small">Thực hiện</button>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="text-center mt-3">
+                    <a href="/Student/Missions" class="text-warning fw-semibold small">Xem bảng xếp hạng tuần &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,202 @@
+@model List<DONET_Academy.Core.Entities.BaiDang>
+@{
+    ViewData["Title"] = "Cộng Đồng Hỏi Đáp Học Tập";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Diễn Đàn Thảo Luận & Hỏi Bài THPT</h2>
+            <p class="text-muted mb-0">Chia sẻ bí kíp luyện thi, giải đáp câu hỏi khó cùng bạn bè và thầy cô</p>
+        </div>
+        <button onclick="openModal('createPostModal')" class="btn-donet">+ Đặt Câu Hỏi Mới</button>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="d-flex flex-column gap-3">
+                @foreach (var post in Model)
+                {
+                    <div class="card-donet">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-warning text-dark">Hỏi bài</span>
+                                <span class="fw-semibold text-dark">@post.NguoiDung?.HoTen</span>
+                                <span class="text-muted small">&bull; @post.NgayDang.ToString("dd/MM/yyyy HH:mm")</span>
+                            </div>
+                            <span class="text-muted small">@post.LuotXem lượt xem</span>
+                        </div>
+
+                        <h5 class="fw-bold mb-2">@post.TieuDe</h5>
+                        <p class="text-muted small mb-3">@post.NoiDung</p>
+
+                        <!-- Comments Section -->
+                        @if (post.BinhLuans.Any())
+                        {
+                            <div class="p-3 bg-light rounded-3 mb-3 border">
+                                <div class="small fw-bold text-muted mb-2">BÌNH LUẬN NỔI BẬT:</div>
+                                @foreach (var c in post.BinhLuans)
+                                {
+                                    <div class="small">
+                                        <strong>@c.NguoiDung?.HoTen:</strong> <span class="text-dark">@c.NoiDung</span>
+                                    </div>
+                                }
+                            </div>
+                        }
+
+                        <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                            <div class="d-flex gap-2">
+                                <button onclick="showToast('Đã vote hữu ích cho bài viết! +5 XP', 'success')" class="btn-outline-donet py-1 px-3 small">▲ Hữu ích (@post.Votes.Count)</button>
+                                <button class="btn-outline-donet py-1 px-3 small">Bình luận (@post.BinhLuans.Count)</button>
+                            </div>
+                            <button onclick="showToast('Báo cáo vi phạm đã được gửi đến ban quản trị.', 'warning')" class="btn btn-sm btn-link text-muted small p-0 text-decoration-none">Báo cáo</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Community Sidebar -->
+        <div class="col-lg-4">
+            <div class="card-donet mb-3">
+                <h5 class="fw-bold mb-3">Nội Quy Diễn Đàn</h5>
+                <ul class="text-muted small ps-3 mb-0">
+                    <li>Đặt tiêu đề rõ ràng, nêu rõ môn học và chuyên đề.</li>
+                    <li>Không spam nội dung hoặc chia sẻ tài liệu có bản quyền trái phép.</li>
+                    <li>Mỗi câu trả lời hữu ích được giáo viên duyệt sẽ nhận được 20 XP.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Đặt câu hỏi chuẩn Bootstrap 5 & Apple Design (Giống _AuthModal và topupModal) -->
+<div class="modal fade modal-apple-blur" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 24px; padding: 28px;">
+            <div class="modal-header border-0 pb-0 position-relative">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 44px; height: 44px; background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%); border: 1.5px solid #FCD34D;">
+                        <span class="fs-5">💬</span>
+                    </div>
+                    <div>
+                        <h4 class="modal-title fw-bold text-dark mb-0" id="createPostModalLabel">Đặt Câu Hỏi Học Tập Mới</h4>
+                        <p class="small text-muted mb-0">Hỏi bài và nhận lời giải đáp nhanh chóng từ giáo viên và cộng đồng THPT</p>
+                    </div>
+                </div>
+                <button type="button" class="btn-close-apple" data-bs-dismiss="modal" aria-label="Đóng" onclick="closeModal('createPostModal')">✕</button>
+            </div>
+            
+            <div class="modal-body px-0 pt-3 pb-2">
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-dark">Môn học & Chuyên đề:</label>
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <select class="form-select input-apple" id="newPostSubject">
+                                <option value="Toán học" selected>Toán học (Giải tích, Oxyz)</option>
+                                <option value="Vật lí">Vật lí (Dao động, Sóng, Điện)</option>
+                                <option value="Hóa học">Hóa học (Hữu cơ, Este, Kim loại)</option>
+                                <option value="Sinh học">Sinh học (Di truyền, Tiến hóa)</option>
+                                <option value="Tiếng Anh">Tiếng Anh (Ngữ pháp, Đọc hiểu)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <select class="form-select input-apple" id="newPostCategory">
+                                <option value="Hỏi bài tập về nhà" selected>Hỏi bài tập về nhà</option>
+                                <option value="Thảo luận đề thi thử">Thảo luận đề thi thử</option>
+                                <option value="Mẹo bấm máy tính Casio">Mẹo bấm máy tính Casio</option>
+                                <option value="Kinh nghiệm ôn thi THPT">Kinh nghiệm ôn thi THPT</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-dark">Tiêu đề câu hỏi *</label>
+                    <input type="text" class="form-control input-apple" id="newPostTitle" placeholder="Ví dụ: Cách bấm máy tính Casio 580VNX giải nhanh bài toán hàm số..." required />
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label small fw-bold text-dark">Nội dung chi tiết hoặc đề bài *</label>
+                    <textarea class="form-control input-apple" id="newPostContent" rows="4" placeholder="Nhập chi tiết bài toán, công thức hoặc thắc mắc của bạn..." required></textarea>
+                </div>
+                
+                <div class="p-3 rounded-3 mb-2" style="background: #FFFDF7; border: 1px dashed #FCD34D;">
+                    <div class="small text-muted d-flex align-items-center gap-2">
+                        <span>💡</span>
+                        <span>Mẹo: Đặt câu hỏi rõ ràng giúp giáo viên và các bạn thủ khoa giải đáp nhanh hơn. Bạn sẽ nhận được <strong>+10 XP</strong> khi câu hỏi được gửi lên diễn đàn!</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex gap-3 pt-3 border-top">
+                <button type="button" class="btn-outline-donet flex-grow-1 py-2" data-bs-dismiss="modal" onclick="closeModal('createPostModal')">Hủy</button>
+                <button type="button" onclick="submitCommunityPost()" class="btn btn-donet-gold flex-grow-1 py-2 fs-6 fw-bold shadow-sm">🚀 Đăng Câu Hỏi Ngay</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function submitCommunityPost() {
+            const titleInput = document.getElementById('newPostTitle');
+            const contentInput = document.getElementById('newPostContent');
+            const subjectSelect = document.getElementById('newPostSubject');
+            
+            const title = titleInput?.value?.trim();
+            const content = contentInput?.value?.trim();
+            const subject = subjectSelect?.value || 'Hỏi bài';
+
+            if (!title) {
+                showToast('Vui lòng nhập tiêu đề câu hỏi!', 'error');
+                titleInput?.focus();
+                return;
+            }
+
+            closeModal('createPostModal');
+
+            // Tạo thẻ bài đăng mới chèn vào đầu diễn đàn
+            const feedContainer = document.querySelector('.col-lg-8 .d-flex.flex-column');
+            if (feedContainer) {
+                const now = new Date();
+                const timeStr = String(now.getDate()).padStart(2, '0') + '/' + 
+                                String(now.getMonth() + 1).padStart(2, '0') + '/' + 
+                                now.getFullYear() + ' ' + 
+                                String(now.getHours()).padStart(2, '0') + ':' + 
+                                String(now.getMinutes()).padStart(2, '0');
+
+                const postCard = document.createElement('div');
+                postCard.className = 'card-donet card-donet-interactive';
+                postCard.style.animation = 'pageFadeIn 0.35s var(--ease-apple) forwards';
+                postCard.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-warning text-dark">${subject}</span>
+                            <span class="fw-semibold text-dark">Nguyễn Văn An (Bạn)</span>
+                            <span class="text-muted small">&bull; ${timeStr}</span>
+                        </div>
+                        <span class="text-muted small">1 lượt xem</span>
+                    </div>
+                    <h5 class="fw-bold mb-2">${title}</h5>
+                    <p class="text-muted small mb-3">${content || 'Câu hỏi đang chờ câu trả lời từ cộng đồng và giáo viên...'}</p>
+                    <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                        <div class="d-flex gap-2">
+                            <button onclick="showToast('Đã vote hữu ích cho bài viết! +5 XP', 'success')" class="btn-outline-donet py-1 px-3 small">▲ Hữu ích (0)</button>
+                            <button class="btn-outline-donet py-1 px-3 small">Bình luận (0)</button>
+                        </div>
+                        <button onclick="showToast('Báo cáo vi phạm đã được gửi đến ban quản trị.', 'warning')" class="btn btn-sm btn-link text-muted small p-0 text-decoration-none">Báo cáo</button>
+                    </div>
+                `;
+                feedContainer.insertBefore(postCard, feedContainer.firstChild);
+            }
+
+            // Reset form
+            if (titleInput) titleInput.value = '';
+            if (contentInput) contentInput.value = '';
+
+            showToast('Đăng câu hỏi thành công! Bạn nhận được +10 XP thảo luận. ✨', 'success');
+        }
+    </script>
+}
+
