@@ -238,3 +238,78 @@ flowchart LR
      * **TV2 $\leftrightarrow$ TV5:** Học sinh mua khóa học (`DangKyKhoaHoc`) trừ tiền `ViTien`.
      * **TV3 $\leftrightarrow$ TV1:** Học sinh làm đề thi (`BaiLam`) cộng `TongXP` vào `HoSoHocSinh`.
      * **TV4 $\leftrightarrow$ TV5:** Học sinh đặt lịch (`DatLich`) tạo `KhoanTamGiu` $\to$ Hoàn thành `PhienHoc1V1` $\to$ Chạy `quyetToan()` chia 80/20 vào `ViTien` giáo viên.
+
+     Trong **Option 1**, mặc dù 5 thành viên được chia theo 5 cụm dọc độc lập để không đụng file nhau, nhưng về mặt **khóa ngoại Database (FK)** và **luồng nghiệp vụ liên thông**, các thành viên sẽ có sự phụ thuộc theo **3 tầng**.
+
+---
+
+### 1. Sơ đồ Phụ thuộc giữa 5 Thành viên (Ai cần dữ liệu/hàm của ai?)
+
+```mermaid
+flowchart TD
+    TV1["👤 TV1 (Tầng Gốc)<br/>Tài khoản, Hồ sơ HS/GV, Thông báo"]
+    TV2["👤 TV2 (Danh mục & Học tập)<br/>Khối lớp, Môn học, Tổ hợp, Khóa học, AI"]
+    TV5["👤 TV5 (Trụ cột Tài chính)<br/>Ví VNĐ, Sổ cái, Ký quỹ Escrow, Quyết toán"]
+    TV3["👤 TV3 (Khảo thí & XP)<br/>Bộ đề, Phòng thi, Bài tập, Nhiệm vụ & Cấp độ"]
+    TV4["👤 TV4 (Gia sư 1-1 & Cộng đồng)<br/>Lịch rảnh, Đặt lịch, Phiên học, Hủy 48h, Diễn đàn"]
+
+    TV1 -->|Cung cấp MaNguoiDung, MaHoSoHS, MaHoSoGV| TV2
+    TV1 -->|Cung cấp MaHoSoHS, MaHoSoGV| TV3
+    TV1 -->|Cung cấp MaNguoiDung, MaHoSoHS, MaHoSoGV| TV4
+    TV1 -->|Cung cấp MaNguoiDung, MaHoSoGV| TV5
+
+    TV2 -->|Cung cấp MaMonHoc| TV3
+    TV2 -->|Cung cấp MaMonHoc| TV4
+    TV2 -->|Khi mua khóa học: Gọi TruTien| TV5
+
+    TV4 <-->|Đặt lịch: Tạo KhoanTamGiu<br/>Hủy 48h: Gọi HoanVeVi<br/>Hoàn thành buổi học: Gọi QuyetToan 80/20| TV5
+
+    TV3 -->|Khi xong đề thi/nhiệm vụ: Cộng DiemXP & nâng CapDo vào HoSoHocSinh| TV1
+```
+
+---
+
+### 2. Chi tiết các điểm phụ thuộc giữa từng cặp thành viên
+
+| Thành viên | Phụ thuộc vào ai? | Cụ thể phụ thuộc cái gì? |
+| :--- | :--- | :--- |
+| **👤 TV1**<br/>*(Identity & Hồ sơ)* | **Ít phụ thuộc nhất** *(Là gốc của cả nhóm)* | • Chỉ tham chiếu danh mục tĩnh `MaKhoiLop`, `MaMonHoc` (của **TV2**) và `MaCapDo` (của **TV3**) khi tạo mới hồ sơ Học sinh / Giáo viên.<br/>• Khi học sinh mua `GoiPremium` bằng ví: gọi hàm trừ tiền của **TV5**. |
+| **👤 TV5**<br/>*(Tài chính & Ví VNĐ)* | Phụ thuộc gốc vào **TV1** & phối hợp 2 chiều với **TV4** | • Cần `MaNguoiDung` (của **TV1**) để mở `ViTien`, và `MaHoSoGiaoVien` (của **TV1**) để tạo `TaiKhoanNhanTien` & `LenhRutTien`.<br/>• Nhận `MaDatLich` (của **TV4**) để tạo `KhoanTamGiu` và chờ sự kiện kết thúc `PhienHoc1V1` (của **TV4**) để chạy hàm `quyetToan()` chia doanh thu 80/20. |
+| **👤 TV2**<br/>*(Học thuật, Khóa học & AI)* | Phụ thuộc vào **TV1** và **TV5** | • Cần `MaHoSoHocSinh` (của **TV1**) để lưu tổ hợp môn (`HocSinh_ToHop`), tiến độ bài học (`TienDoBaiHoc`) và đếm lượt `QuotaAI`.<br/>• Khi học sinh bấm **Mua khóa học (`DangKyKhoaHoc.dangKy()`)**: phải gọi hàm `TruTien()` của **TV5** để trừ ví VNĐ và ghi bút toán `TRU` vào `GiaoDichVi`. |
+| **👤 TV3**<br/>*(Khảo thí, Bài tập & XP)* | Phụ thuộc vào **TV1** và **TV2** | • Cần `MaMonHoc` (của **TV2**) để tạo Bộ đề (`BoDe`) và Bài tập giao (`BaiTapGiao`).<br/>• Cần `MaHoSoHocSinh` & `MaHoSoGiaoVien` (của **TV1**) để lưu lượt làm bài (`BaiLam`) và nộp bài (`NopBaiTap`).<br/>• Khi học sinh hoàn thành nhiệm vụ (`TienDoNhiemVu`): **TV3** cộng `DiemXP` và nâng `MaCapDo` trực tiếp vào bảng `HoSoHocSinh` (của **TV1**). |
+| **👤 TV4**<br/>*(Gia sư 1-1 & Cộng đồng)* | Phụ thuộc vào **TV1**, **TV2** và gắn chặt với **TV5** | • Cần `MaHoSoGiaoVien`, `MaHoSoHocSinh` (**TV1**) và `MaMonHoc` (**TV2**) để mở `LichRanhGiaoVien` và `DatLich`.<br/>• **Phụ thuộc nghiệp vụ quan trọng nhất với TV5:**<br/>  1. Lúc Đặt lịch (`DatLich.xacNhan()`): gọi **TV5** trừ tiền ví HS và đưa vào `KhoanTamGiu`.<br/>  2. Lúc Hủy lịch trước 48h (`HoanTien.hoanVeVi()`): gọi **TV5** xả `KhoanTamGiu` hoàn 100% tiền về ví HS.<br/>  3. Lúc Nghiệm thu phòng học (`PhienHoc1V1`): gọi **TV5** giải phóng `KhoanTamGiu` sang `PhanChiaDoanhThu` (cộng 80% vào ví GV). |
+
+---
+
+### 3. Thứ tự làm việc chuẩn (3 Giai đoạn) để 5 người KHÔNG PHẢI CHỜ NHAU
+
+> [!TIP]
+> **Lợi thế lớn của nhóm bạn:** Hiện tại trong project, tôi đã tạo sẵn **100% cả 55 class Entity, `ApplicationDbContext` và dữ liệu mẫu `DemoDataSeeder`**. Vì vậy các bảng và khóa ngoại đã có sẵn, **cả 5 bạn có thể bắt tay vào code ngay từ Ngày 1** mà không bị kẹt chờ người khác tạo bảng!
+
+Để quá trình ráp code mượt mà nhất, nhóm chỉ cần đi theo thứ tự **3 bước** sau:
+
+#### 🥇 Bước 1: Chốt các "Hàm Giao Tiếp Chung" trước (1 – 2 ngày đầu)
+Trong lúc cả nhóm bắt đầu làm, **TV1** và **TV5** ưu tiên viết xong sớm các hàm dùng chung (Interface) sau để 3 bạn còn lại gọi:
+1. **TV1 viết trước:**
+   * Hàm lấy ID người đang đăng nhập (`GetCurrentUserId()`, `GetCurrentStudentId()`, `GetCurrentTeacherId()`).
+   * Hàm bắn thông báo dùng chung: `TaoThongBaoAsync(int maNguoiDung, string tieuDe, string noiDung)` (để khi nộp bài, nạp tiền, đặt lịch xong thì các bạn khác gọi hàm này báo cho user).
+2. **TV5 viết trước 4 hàm Ví tiền lõi (`IWalletService`):**
+   * `TruTienMuaKhoaHocAsync(int maHocSinh, int maKhoaHoc, decimal soTien)` $\rightarrow$ cho **TV2** gọi.
+   * `TamGiuTienDatLichAsync(int maHocSinh, int maDatLich, decimal soTien)` $\rightarrow$ cho **TV4** gọi.
+   * `HoanTienHuyLichAsync(int maYeuCauHuy, int maDatLich, decimal soTienHoan)` $\rightarrow$ cho **TV4** gọi.
+   * `QuyetToanBuoiHocAsync(int maDatLich)` $\rightarrow$ cho **TV4** gọi.
+
+#### 🥈 Bước 2: Cả 5 thành viên Code Song Song Độc lập (Giai đoạn chính)
+Khi đã có tên các hàm ở Bước 1, cả 5 thành viên tỏa ra làm độc lập 100% trên nhánh Git của mình:
+* **TV4** có thể code xong toàn bộ phần **Diễn đàn Cộng đồng (`BaiDang`, `BinhLuan`, `Vote`, `BaoCaoViPham`)** và **Quản lý Lịch rảnh (`LichRanhGiaoVien`)** ngay lập tức vì không phụ thuộc chút nào vào Ví tiền của TV5.
+* **TV2** code trọn vẹn **Tổ hợp môn, Cây Chương/Bài học, Tiến độ học và AI Tutor (`QuotaAI`)** độc lập hoàn toàn.
+* **TV3** code trọn vẹn **Ngân hàng câu hỏi, Phòng thi đếm ngược, Chấm điểm trắc nghiệm, Giao bài tập và Nhiệm vụ ngày** độc lập hoàn toàn.
+* **TV1** code **Đăng nhập/Đăng ký Identity, Hồ sơ, Admin duyệt Giáo viên, Cấu hình hệ thống**.
+* **TV5** code **Nạp tiền VietQR, Webhook, Sổ cái `GiaoDichVi`, Lệnh rút tiền, Admin duyệt rút tiền và Báo cáo doanh thu**.
+
+#### 🥉 Bước 3: Ghép nối (Integration) theo đúng thứ tự 4 luồng
+Khi ghép code của 5 người lại vào nhánh `main`, nhóm kiểm thử theo đúng thứ tự từ gốc lên ngọn:
+1. **Luồng 1 (TV1 $\to$ TV2):** Đăng ký/Đăng nhập tài khoản $\to$ Chọn Khối lớp & Tổ hợp môn.
+2. **Luồng 2 (TV5 $\to$ TV2):** Nạp tiền vào Ví VNĐ (TV5) $\to$ Mua Khóa học tri thức (TV2) $\to$ Vào học bài.
+3. **Luồng 3 (TV3 $\to$ TV1):** Làm đề thi trắc nghiệm & Nộp bài tập (TV3) $\to$ Hoàn thành Nhiệm vụ ngày $\to$ Cộng XP & Thăng cấp `CapDo` trong `HoSoHocSinh` (TV1).
+4. **Luồng 4 (TV1 $\to$ TV4 $\to$ TV5):** Admin duyệt hồ sơ Giáo viên (TV1) $\to$ Giáo viên mở Lịch rảnh (TV4) $\to$ Học sinh Đặt lịch & Tạm giữ tiền (TV4 + TV5) $\to$ Học xong `PhienHoc1V1` hoặc Hủy trước 48h (TV4) $\to$ Quyết toán chia 80/20 hoặc Hoàn tiền + Giáo viên Rút tiền về ngân hàng (TV5).
